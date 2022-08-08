@@ -1,0 +1,27 @@
+<div class="container text-center">
+    <div class="container text-left">
+        {{ form_start(form) }}
+        {{ form_label(form, 'Code')}}
+        {{ form_widget(form.code , {'attr': {'placeholder': 'Ajouter un code','class':'form-control mb-2'}}) }}
+        {{ form_label(form, 'Titre')}}
+        {{ form_widget(form.title , {'attr': {'placeholder': 'Ajouter un titre','class':'form-control mb-2'}}) }}
+        {{ form_label(form, 'Description')}}
+        {{ form_widget(form.description , {'attr': {'placeholder': 'Ajouter une description','class':'form-control mb-2'}}) }}
+        {{ form_label(form, 'Pays')}}
+        {{ form_widget(form.country , {'attr': {'placeholder': 'Ajouter une date de fin','class':'form-control mb-2'}}) }}
+        {{ form_label(form, 'Date de début')}}
+        {{ form_widget(form.dateDebut , {'attr': {'placeholder': 'Ajouter une date de début','class':'form-control mb-2',}}) }}
+        {{ form_label(form, 'Date de fin')}}
+        {{ form_widget(form.dateFin , {'attr': {'placeholder': 'Ajouter une date de fin','class':'form-control mb-2'}}) }}
+        {{ form_label(form, 'Type')}}
+        {{ form_widget(form.type , {'attr': {'placeholder': 'Ajouter une date de fin','class':'form-control mb-2'}}) }}
+        {{ form_label(form, 'Status')}}
+        {{ form_widget(form.status , {'attr': {'placeholder': 'Ajouter une date de fin','class':'form-control mb-2'}}) }}
+        {{ form_label(form, 'Spécialité')}}
+        {{ form_widget(form.speciality , {'attr': {'placeholder': 'Ajouter une date de fin','class':'form-control mb-2'}}) }}
+
+        <button class="btn btn-primary mt-2">{% block btn %}{{ name }}{% endblock%} </button>
+        {{ form_end(form) }}
+    </div>
+</div>
+
