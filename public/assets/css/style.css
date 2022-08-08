@@ -1,0 +1,66 @@
+/** MOBILE FIRST **/
+.brand {
+    display: grid;
+    grid-template-rows: 30vh;
+    background-image: url("../images/headerbg.jpg");
+    background-size: cover;
+    align-items: center;
+    justify-content: center;
+
+}
+.logo{
+    width: 100%;
+    height: 70%;
+    margin-left: 0;
+}
+.bord {
+    font-family: "Bai Jamjuree";
+    font-size: 3rem;
+}
+.btns_row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+.button_menu {
+    height: 30vh;
+    margin: 0.5rem;
+}
+.login_container{
+    display: grid;
+    background-image: url("../images/bgLogin.jpg");
+    background-size: cover;
+    grid-template-rows: 1fr;
+    grid-template-rows: 100vh;
+    justify-content:center;
+    align-items: center;
+}
+.from_login {
+    width: 90vw;
+}
+
+@media (min-width: 720px) {
+    .brand {
+        grid-template-columns: 1fr 1fr;
+    }
+    .bord {
+        font-family: "Bai Jamjuree";
+        font-size: 4rem;
+    }
+    .logo{
+        width: 80%;
+        margin-left: 5rem;
+    }
+    .btns_row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+    .button_menu {
+        height: 30vh;
+        margin: 1.5rem;
+    }
+    .from_login {
+        width: 50vw;
+    }
+}
