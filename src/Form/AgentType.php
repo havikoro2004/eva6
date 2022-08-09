@@ -29,7 +29,7 @@ class AgentType extends AbstractType
                 'placeholder' => 'Choisir un pays'
             ])
 
-            ->add('speciality',EntityType::class,[
+            ->add('agentSpeciality',EntityType::class,[
                 'class' =>Speciality::class,
                 'choice_label' => 'name',
                 'multiple' => true,

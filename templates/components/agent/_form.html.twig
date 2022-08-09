@@ -12,7 +12,7 @@
         {{ form_label(form, 'Nationalité')}}
         {{ form_widget(form.nationality , {'attr': {'class':'form-control mb-2'}}) }}
         {{ form_label(form, 'Spécialité')}}
-        {{ form_widget(form.speciality , {'attr': {'class':'form-control mb-2 d-flex justify-content-between align-item-center'}}) }}
+        {{ form_widget(form.agentSpeciality , {'attr': {'class':'form-control mb-2 d-flex justify-content-between align-item-center'}}) }}
         <button class="btn btn-primary mt-2 mb-5">{% block btn %}{{ name }}{% endblock%} </button>
         {{ form_end(form) }}
     </div>

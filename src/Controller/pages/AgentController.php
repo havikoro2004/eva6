@@ -44,10 +44,10 @@ class AgentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             if ($agentRepository->findOneBy([
                 'code'=>$form->get('code')->getViewData(),
-                'firstName'=>$form->get('firstName')->getViewData(),
-                'lastName'=>$form->get('lastName')->getViewData()
             ])){
-                $this->addFlash('alert','Il semble que cet agent existe deja ');
+                $this->addFlash('alert','Il semble qu\'il y a deja un agent avec ce code ');
+            }elseif (!$form->get('agentSpeciality')->getViewData()){
+                $this->addFlash('alert','L\'agent doit avoir au moins une spécialité');
             } else {
                 $em->persist($data);
                 $em->flush();
@@ -92,7 +92,9 @@ class AgentController extends AbstractController
             /** Vérifier s'il n'y a pas agent du même code et si oui si ce n'est pas le formulaire a modifier en question si c'est le cas on peut modifier **/
             if ($resultmission && ($resultmission->getId() != $agent->getId() )){
                 $this->addFlash('alert','Il semble qu\'il y a deja un agent avec ce code ');
-            } else {
+            } elseif (!$form->get('agentSpeciality')->getViewData()){
+                $this->addFlash('alert','L\'agent doit avoir au moins une spécialité');
+            }else {
                 $em->flush();
                 $this->addFlash('success','L\'agent a bien été modifié');
                 return $this->redirectToRoute('app_agent');
