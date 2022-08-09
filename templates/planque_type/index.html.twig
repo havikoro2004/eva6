@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+ {% block body %}
+     {% include 'components/_header.html.twig' %}
+     {% include 'components/_navbar.html.twig' %}
+     <div class="container">
+         <h1 class="my-5 text-dark text-center">Planques type</h1>
+         {% set name='Ajouter' %}
+         {% include 'components/planque_type/_form.html.twig' %}
+     </div>
+     <div class="container">
+         <div class="row">
+             {% if allPlanque is not empty %}
+                 <table class="table m-5 col text-center">
+                     <tr>
+                         <th scope="col">Id</th>
+                         <th scope="col">Type de planque</th>
+                         <th scope="col">Modifier</th>
+                         <th scope="col">Supprimer</th>
+                     </tr>
+                     {% for planque in allPlanque %}
+                         <tr>
+                             <td>{{ planque.id }}</td>
+                             <td>{{ planque.name }}</td>
+                             <td>
+                                 <a class="btn btn-primary" href="/planque/type/{{ planque.id }}/edit">Modifier</a>
+                             </td>
+                             <td>{% include 'components/planque_type/_modal.html.twig' %}
+                                 {% block button %}
+                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ planque.id }}">
+                                         Suprimer
+                                     </button>
+                                 {% endblock %}
+                                 {% block action %}
+
+                                 {% endblock %}
+                             </td>
+                         </tr>
+                     {% endfor %}
+                 </table>
+             {% else %}
+                 <div class="alert alert-dark mt-4 container text-center" style="width: 92%">Il n'y a pas encore de spécialité ajoutée</div>
+             {% endif %}
+         </div>
+         <div class="Page navigation example d-flex justify-content-center">
+             <div>
+                 {{ knp_pagination_render(allPlanque,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+             </div>
+         </div>
+
+     </div>
+
+ {% endblock %}

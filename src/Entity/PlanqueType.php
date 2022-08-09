@@ -6,6 +6,7 @@ use App\Repository\PlanqueTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PlanqueTypeRepository::class)]
 class PlanqueType
@@ -15,15 +16,19 @@ class PlanqueType
     #[ORM\Column]
     private ?int $id = null;
 
+
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Planque::class, orphanRemoval: true)]
-    private Collection $planque;
+    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Planque::class)]
+    private Collection $mission;
 
     public function __construct()
     {
-        $this->planque = new ArrayCollection();
+        $this->mission = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,30 +51,35 @@ class PlanqueType
     /**
      * @return Collection<int, Planque>
      */
-    public function getPlanque(): Collection
+    public function getMission(): Collection
     {
-        return $this->planque;
+        return $this->mission;
     }
 
-    public function addPlanque(Planque $planque): self
+    public function addMission(Planque $mission): self
     {
-        if (!$this->planque->contains($planque)) {
-            $this->planque->add($planque);
-            $planque->setType($this);
+        if (!$this->mission->contains($mission)) {
+            $this->mission->add($mission);
+            $mission->setType($this);
         }
 
         return $this;
     }
 
-    public function removePlanque(Planque $planque): self
+    public function removeMission(Planque $mission): self
     {
-        if ($this->planque->removeElement($planque)) {
+        if ($this->mission->removeElement($mission)) {
             // set the owning side to null (unless already changed)
-            if ($planque->getType() === $this) {
-                $planque->setType(null);
+            if ($mission->getType() === $this) {
+                $mission->setType(null);
             }
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

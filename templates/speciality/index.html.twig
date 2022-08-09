@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+ {% block body %}
+     {% include 'components/_header.html.twig' %}
+     {% include 'components/_navbar.html.twig' %}
+     <div class="container">
+         <h1 class="my-5 text-dark text-center">Spécialités</h1>
+         {% set name='Ajouter' %}
+         {% include 'components/speciality/_form.html.twig' %}
+     </div>
+     <div class="container">
+         <div class="row">
+             {% if allSpecialitys is not empty %}
+                 <table class="table m-5 col text-center">
+                     <tr>
+                         <th scope="col">Id</th>
+                         <th scope="col">Nom de la spécialité</th>
+                         <th scope="col">Modifier</th>
+                         <th scope="col">Supprimer</th>
+                     </tr>
+                     {% for speciality in allSpecialitys %}
+                         <tr>
+                             <td>{{ speciality.id }}</td>
+                             <td>{{ speciality.name }}</td>
+                             <td>
+                                 <a class="btn btn-primary" href="/speciality/{{ speciality.id }}/edit">Modifier</a>
+                             </td>
+                             <td>{% include 'components/speciality/_modal.html.twig' %}
+                                 {% block button %}
+                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ speciality.id }}">
+                                         Suprimer
+                                     </button>
+                                 {% endblock %}
+                                 {% block action %}
+
+                                 {% endblock %}
+                             </td>
+                         </tr>
+                     {% endfor %}
+                 </table>
+             {% else %}
+                 <div class="alert alert-dark mt-4 container text-center" style="width: 92%">Il n'y a pas encore de spécialité ajoutée</div>
+             {% endif %}
+         </div>
+         <div class="Page navigation example d-flex justify-content-center">
+             <div>
+                 {{ knp_pagination_render(allSpecialitys,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+             </div>
+         </div>
+
+     </div>
+
+ {% endblock %}

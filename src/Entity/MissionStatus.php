@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MissionStatusRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionStatusRepository::class)]
 class MissionStatus
@@ -16,15 +15,10 @@ class MissionStatus
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $name = null;
-
-    #[ORM\OneToMany(mappedBy: 'status', targetEntity: Mission::class, orphanRemoval: true)]
-    private Collection $mission;
-
-    public function __construct()
-    {
-        $this->mission = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -43,33 +37,4 @@ class MissionStatus
         return $this;
     }
 
-    /**
-     * @return Collection<int, Mission>
-     */
-    public function getMission(): Collection
-    {
-        return $this->mission;
-    }
-
-    public function addMission(Mission $mission): self
-    {
-        if (!$this->mission->contains($mission)) {
-            $this->mission->add($mission);
-            $mission->setStatus($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMission(Mission $mission): self
-    {
-        if ($this->mission->removeElement($mission)) {
-            // set the owning side to null (unless already changed)
-            if ($mission->getStatus() === $this) {
-                $mission->setStatus(null);
-            }
-        }
-
-        return $this;
-    }
 }

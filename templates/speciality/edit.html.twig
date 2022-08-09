@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+ {% block body %}
+     {% set name='Modifier' %}
+     {% include 'components/_header.html.twig' %}
+     {% include 'components/_navbar.html.twig' %}
+     <div class="container text-center">
+     <h1 class="m-5 text-dark">Modifier la spécialité</h1>
+     {% include 'components/speciality/_form.html.twig' %}
+     <div>
+ {% endblock %}
