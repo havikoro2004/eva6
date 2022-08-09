@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SpecialityController extends AbstractController
 {
     #[Route('/speciality', name: 'app_speciality')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(PaginatorInterface $paginator,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , SpecialityRepository $specialityRepository): Response
     {
         $speciality = new Speciality();
@@ -54,7 +54,7 @@ class SpecialityController extends AbstractController
 
     #[Route('/speciality/{id}/edit')]
     #[Entity('speciality', options: ['id' => 'id'])]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edite(Speciality $speciality,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , SpecialityRepository $specialityRepository):Response {
         $em = $manager->getManager();
         $form = $this->createForm(SpecialityType::class,$speciality);
@@ -88,7 +88,7 @@ class SpecialityController extends AbstractController
     }
 
     #[Route('/speciality/{id}/delete')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(MissionRepository $missionRepository ,Speciality $speciality ,ManagerRegistry $manager):Response {
         $result = $missionRepository->findOneBy([
             'speciality'=>$speciality->getId()

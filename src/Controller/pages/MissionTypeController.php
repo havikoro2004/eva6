@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class MissionTypeController extends AbstractController
 {
     #[Route('/type', name: 'app_mission_type')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(PaginatorInterface $paginator,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , MissionTypeRepository $missionType): Response
     {
         $mission = new MissionType();
@@ -53,7 +53,7 @@ class MissionTypeController extends AbstractController
 
     #[Route('/type/{id}/edit')]
     #[Entity('mission', options: ['id' => 'id'])]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edite(MissionType $mission,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , MissionTypeRepository $missionTypeRepository):Response {
         $em = $manager->getManager();
         $form = $this->createForm(MissionTypeType::class,$mission);
@@ -87,7 +87,7 @@ class MissionTypeController extends AbstractController
     }
 
     #[Route('/type/{id}/delete',name: 'app_mission_d')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(MissionRepository $missionRepository ,MissionType $missionType ,ManagerRegistry $manager):Response {
 
         $missionWithThisType = $missionRepository->findOneBy([

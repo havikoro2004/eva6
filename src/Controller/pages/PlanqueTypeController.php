@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PlanqueTypeController extends AbstractController
 {
     #[Route('/planque/type', name: 'app_planque_type')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(PaginatorInterface $paginator,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , PlanqueTypeRepository $planqueTypeRepository): Response
     {
         $planqueType = new PlanqueType();
@@ -52,7 +52,7 @@ class PlanqueTypeController extends AbstractController
     }
     #[Route('/planque/type/{id}/edit')]
     #[Entity('planqueType', options: ['id' => 'id'])]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edite(PlanqueType $planqueType,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , PlanqueTypeRepository $planqueTypeRepository):Response {
         $em = $manager->getManager();
         $form = $this->createForm(PlanqueTypeType::class,$planqueType);
@@ -86,7 +86,7 @@ class PlanqueTypeController extends AbstractController
     }
 
     #[Route('/planque/type/{id}/delete')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(PlanqueType $planqueType ,ManagerRegistry $manager):Response {
         $em = $manager->getManager();
         $em->remove($planqueType);
