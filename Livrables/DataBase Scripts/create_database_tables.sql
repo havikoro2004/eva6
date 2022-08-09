@@ -1,11 +1,11 @@
-/** Supprimer la base de donnée du nom teste si elle existe **/
-DROP SCHEMA IF EXISTS teste;
+/** Supprimer la base de donnée du nom kgb si elle existe **/
+DROP SCHEMA IF EXISTS kgb;
 
-    /** Création de la base de donnée du nom teste  **/
-    CREATE SCHEMA IF NOT EXISTS teste CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;
+    /** Création de la base de donnée du nom kgb  **/
+    CREATE SCHEMA IF NOT EXISTS kgb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;
 
         /**  Création des tables selon l'ordre  **/
-        CREATE TABLE teste.user (
+        CREATE TABLE kgb.user (
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             firstName VARCHAR(255) NOT NULL ,
             lastName VARCHAR(255) NOT NULL ,
@@ -14,27 +14,46 @@ DROP SCHEMA IF EXISTS teste;
             createdAt DATETIME NOT NULL
         ) ENGINE=InnoDB;
 
-        CREATE TABLE teste.speciality(
+        CREATE TABLE kgb.speciality(
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             name VARCHAR(255) NOT NULL
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.mission_type (
+        CREATE TABLE kgb.mission_type (
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             name VARCHAR(255) NOT NULL
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.status(
+        CREATE TABLE kgb.status(
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             name VARCHAR(255) NOT NULL
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.planque_type(
+        CREATE TABLE kgb.planque_type(
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             name VARCHAR(255) NOT NULL
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.mission(
+        
+        CREATE TABLE kgb.agent(
+            id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+            firstName VARCHAR(255) NOT NULL ,
+            lastName VARCHAR(255) NOT NULL ,
+            birthDay DATE NOT NULL ,
+            code VARCHAR(255) NOT NULL  ,
+            nationality VARCHAR(255) NOT NULL 
+        )ENGINE=InnoDB;
+
+        
+        CREATE TABLE kgb.agent_speciality(
+            agenId INT(10) NOT NULL ,
+            specialityId INT(10) NOT NULL ,
+            PRIMARY KEY (agenId,specialityId),
+            FOREIGN KEY (agenId) REFERENCES agent(id),
+            FOREIGN KEY (specialityId) REFERENCES speciality(id)
+        )ENGINE=InnoDB;
+
+        CREATE TABLE kgb.mission(
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             code VARCHAR(255) NOT NULL,
             title VARCHAR(255) NOT NULL ,
@@ -50,24 +69,7 @@ DROP SCHEMA IF EXISTS teste;
             FOREIGN KEY (speciality) REFERENCES speciality(id)
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.agent(
-            id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-            firstName VARCHAR(255) NOT NULL ,
-            lastName VARCHAR(255) NOT NULL ,
-            birthDay DATE NOT NULL ,
-            code VARCHAR(255) NOT NULL  ,
-            nationality VARCHAR(255) NOT NULL 
-        )ENGINE=InnoDB;
-
-        CREATE TABLE teste.agent_speciality(
-            agenId INT(10) NOT NULL ,
-            specialityId INT(10) NOT NULL ,
-            PRIMARY KEY (agenId,specialityId),
-            FOREIGN KEY (agenId) REFERENCES agent(id),
-            FOREIGN KEY (specialityId) REFERENCES speciality(id)
-        )ENGINE=InnoDB;
-
-        CREATE TABLE teste.agent_mission(
+        CREATE TABLE kgb.agent_mission(
             agenId INT(10) NOT NULL ,
             missionId INT(10) NOT NULL ,
             PRIMARY KEY (agenId,missionId),
@@ -75,7 +77,7 @@ DROP SCHEMA IF EXISTS teste;
             FOREIGN KEY (missionId) REFERENCES mission(id)
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.contact(
+        CREATE TABLE kgb.contact(
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             firstName VARCHAR(255) NOT NULL ,
             lastName VARCHAR(255) NOT NULL ,
@@ -84,7 +86,7 @@ DROP SCHEMA IF EXISTS teste;
             nationality VARCHAR(255) NOT NULL 
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.contact_mission(
+        CREATE TABLE kgb.contact_mission(
             missionId INT(10) NOT NULL ,
             contactId INT(10) NOT NULL ,
             PRIMARY KEY (missionId,contactId),
@@ -92,7 +94,7 @@ DROP SCHEMA IF EXISTS teste;
             FOREIGN KEY (contactId) REFERENCES contact(id)
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.target(
+        CREATE TABLE kgb.target(
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             firstName VARCHAR(255) NOT NULL ,
             lastName VARCHAR(255) NOT NULL ,
@@ -103,7 +105,7 @@ DROP SCHEMA IF EXISTS teste;
             FOREIGN KEY (mission) REFERENCES mission(id)
         )ENGINE=InnoDB;
 
-        CREATE TABLE teste.planque(
+        CREATE TABLE kgb.planque(
             id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             name VARCHAR(255) NOT NULL ,
             adresse TEXT NOT NULL ,
