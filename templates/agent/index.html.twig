@@ -19,6 +19,7 @@
                          <th scope="col">Date de naissance</th>
                          <th scope="col">Code</th>
                          <th scope="col">Nationalité</th>
+                         <th scope="col">Spécialités</th>
                          {% if app.user %}
                              <th scope="col">Modifier</th>
                              <th scope="col">Supprimer</th>
@@ -31,6 +32,11 @@
                              <td>{{ agent.birthDay.format('d-m-Y') }}</td>
                              <td>{{ agent.code }}</td>
                              <td>{{ agent.nationality|country_name }}</td>
+                             <td>
+                                 {% for speciality in agent.agentSpeciality %}
+                                     {{ speciality.name }}
+                                 {% endfor %}
+                             </td>
                              {% if app.user %}
                                  <td>
                                      <a class="btn btn-primary" href="/agent/{{ agent.id }}/edit">Modifier</a>
