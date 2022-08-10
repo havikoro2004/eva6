@@ -45,6 +45,16 @@ DROP SCHEMA IF EXISTS kgb;
         )ENGINE=InnoDB;
 
         
+        CREATE TABLE kgb.contact(
+            id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+            firstName VARCHAR(255) NOT NULL ,
+            lastName VARCHAR(255) NOT NULL ,
+            birthDay DATE NOT NULL ,
+            code VARCHAR(255) NOT NULL  ,
+            nationality VARCHAR(255) NOT NULL 
+        )ENGINE=InnoDB;
+
+        
         CREATE TABLE kgb.agent_speciality(
             agenId INT(10) NOT NULL ,
             specialityId INT(10) NOT NULL ,
@@ -75,15 +85,6 @@ DROP SCHEMA IF EXISTS kgb;
             PRIMARY KEY (agenId,missionId),
             FOREIGN KEY (agenId) REFERENCES agent(id),
             FOREIGN KEY (missionId) REFERENCES mission(id)
-        )ENGINE=InnoDB;
-
-        CREATE TABLE kgb.contact(
-            id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-            firstName VARCHAR(255) NOT NULL ,
-            lastName VARCHAR(255) NOT NULL ,
-            birthDay DATE NOT NULL ,
-            code VARCHAR(255) NOT NULL  ,
-            nationality VARCHAR(255) NOT NULL 
         )ENGINE=InnoDB;
 
         CREATE TABLE kgb.contact_mission(
