@@ -14,8 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Intl\Countries;
 
 class MissionType extends AbstractType
 {
@@ -56,6 +56,7 @@ class MissionType extends AbstractType
                 'class' =>Agent::class,
                 'multiple' => true,
                 'expanded' => true,
+                'mapped' => false,
                 'choice_label' => function ($agent) {
 
                     return $agent->getCode()
@@ -66,6 +67,7 @@ class MissionType extends AbstractType
             ->add('contactMission',EntityType::class,[
                 'class' =>Contact::class,
                 'multiple' => true,
+                'mapped' => false,
                 'expanded' => true,
                 'choice_label' => function ($contact) {
 

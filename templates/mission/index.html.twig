@@ -11,7 +11,7 @@
      </div>
      <div class="container">
          <div class="row">
-             {% if missionInfo is not empty %}
+             {% if missions is not empty %}
                  <table class="table m-5 col text-center">
                      <tr>
                          <th scope="col">Code</th>
@@ -24,7 +24,7 @@
                          <th scope="col">Supprimer</th>
                          {% endif %}
                      </tr>
-                     {% for mission in missionInfo %}
+                     {% for mission in missions %}
                          <tr>
                              <td>{{ mission.code }}</td>
                              <td>{{ mission.title }}</td>
@@ -52,7 +52,7 @@
          </div>
          <div class="Page navigation example d-flex justify-content-center">
              <div>
-                 {{ knp_pagination_render(missionInfo,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+                 {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
              </div>
          </div>
 

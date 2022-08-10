@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AgentController extends AbstractController
 {
     #[Route('/agent', name: 'app_agent')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(PaginatorInterface $paginator ,Request $request ,AgentRepository $agent): Response
     {
         $error=null;
@@ -30,7 +30,7 @@ class AgentController extends AbstractController
     }
 
     #[Route('/agent/add')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function add(ManagerRegistry $manager,Request $request,ValidatorInterface $validator,AgentRepository $agentRepository):Response{
         $agent = new Agent();
         $em = $manager->getManager();
@@ -62,7 +62,7 @@ class AgentController extends AbstractController
     }
 
     #[Route('/agent/{id}/delete')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Agent $agent ,ManagerRegistry $manager):Response {
         $em = $manager->getManager();
         $em->remove($agent);
@@ -74,7 +74,7 @@ class AgentController extends AbstractController
 
     #[Route('/agent/{id}/edit')]
     #[Entity('agent', options: ['id' => 'id'])]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edite(Agent $agent,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , AgentRepository $agentRepository):Response {
         $em = $manager->getManager();
         $form = $this->createForm(AgentType::class,$agent);
