@@ -46,24 +46,25 @@ class Mission
     #[ORM\JoinColumn(nullable: false)]
     private ?Speciality $speciality = null;
 
-    #[ORM\ManyToMany(targetEntity: Agent::class, mappedBy: 'agentMission')]
-    private Collection $agent;
-
-    #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'contactMission')]
-    private Collection $contact;
-
     #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Target::class, orphanRemoval: true)]
     private Collection $target;
 
     #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Planque::class, orphanRemoval: true)]
     private Collection $planque;
 
+    #[ORM\ManyToMany(targetEntity: Agent::class, inversedBy: 'missions')]
+    private Collection $agentMission;
+
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'missions')]
+    private Collection $contactMission;
+
     public function __construct()
     {
-        $this->agent = new ArrayCollection();
-        $this->contact = new ArrayCollection();
+
         $this->target = new ArrayCollection();
         $this->planque = new ArrayCollection();
+        $this->agentMission = new ArrayCollection();
+        $this->contactMission = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,59 +180,6 @@ class Mission
         return $this;
     }
 
-    /**
-     * @return Collection<int, Agent>
-     */
-    public function getAgent(): Collection
-    {
-        return $this->agent;
-    }
-
-    public function addAgent(Agent $agent): self
-    {
-        if (!$this->agent->contains($agent)) {
-            $this->agent->add($agent);
-            $agent->addAgentMission($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAgent(Agent $agent): self
-    {
-        if ($this->agent->removeElement($agent)) {
-            $agent->removeAgentMission($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Contact>
-     */
-    public function getContact(): Collection
-    {
-        return $this->contact;
-    }
-
-    public function addContact(Contact $contact): self
-    {
-        if (!$this->contact->contains($contact)) {
-            $this->contact->add($contact);
-            $contact->addContactMission($this);
-        }
-
-        return $this;
-    }
-
-    public function removeContact(Contact $contact): self
-    {
-        if ($this->contact->removeElement($contact)) {
-            $contact->removeContactMission($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Target>
@@ -289,6 +237,54 @@ class Mission
                 $planque->setMission(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Agent>
+     */
+    public function getAgentMission(): Collection
+    {
+        return $this->agentMission;
+    }
+
+    public function addAgentMission(Agent $agentMission): self
+    {
+        if (!$this->agentMission->contains($agentMission)) {
+            $this->agentMission->add($agentMission);
+        }
+
+        return $this;
+    }
+
+    public function removeAgentMission(Agent $agentMission): self
+    {
+        $this->agentMission->removeElement($agentMission);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContactMission(): Collection
+    {
+        return $this->contactMission;
+    }
+
+    public function addContactMission(Contact $contactMission): self
+    {
+        if (!$this->contactMission->contains($contactMission)) {
+            $this->contactMission->add($contactMission);
+        }
+
+        return $this;
+    }
+
+    public function removeContactMission(Contact $contactMission): self
+    {
+        $this->contactMission->removeElement($contactMission);
 
         return $this;
     }

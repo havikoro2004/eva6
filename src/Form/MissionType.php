@@ -52,7 +52,7 @@ class MissionType extends AbstractType
                 'placeholder' => 'Choisir un status',
             ])
 
-            ->add('agent',EntityType::class,[
+            ->add('agentMission',EntityType::class,[
                 'class' =>Agent::class,
                 'multiple' => true,
                 'expanded' => true,
@@ -63,7 +63,7 @@ class MissionType extends AbstractType
 
                 }
             ])
-            ->add('contact',EntityType::class,[
+            ->add('contactMission',EntityType::class,[
                 'class' =>Contact::class,
                 'multiple' => true,
                 'expanded' => true,

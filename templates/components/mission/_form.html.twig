@@ -29,10 +29,10 @@
             <a href="/speciality" class="btn btn-success ml-2 mb-2" style="min-width: 12rem">Ajouter une spécialité</a>
         </div>
         {{ form_label(form, 'Agents')}}
-        {{ form_widget(form.agent , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
+        {{ form_widget(form.agentMission , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
         <a href="/agent/add" class="btn btn-success mb-2" style="min-width: 12rem">Ajouter un agent</a>
         {{ form_label(form, 'Contacts')}}
-        {{ form_widget(form.contact , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
+        {{ form_widget(form.contactMission , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
         <a href="/contact/add" class="btn btn-success mb-2" style="min-width: 12rem">Ajouter un contact</a><br>
         <div class="container text-center">
             <button class="btn btn-primary mb-5" style="min-width: 12rem">{% block btn %}{{ name }}{% endblock%} </button>

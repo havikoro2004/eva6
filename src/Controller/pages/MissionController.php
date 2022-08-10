@@ -45,7 +45,7 @@ class MissionController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()){
 
-        $contactData = $form->get('contact')->getViewData();
+        $contactData = $form->get('contactMission')->getViewData();
         $countMissionCountry=0;
                 foreach ($contactData as $contact){
                     $testeContact = $contactRepository->findOneBy([
@@ -61,7 +61,7 @@ class MissionController extends AbstractController
                 'code'=>$form->get('code')->getViewData()
             ])){
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
-            }elseif (!$form->get('agent')->getViewData()){
+            }elseif (!$form->get('agentMission')->getViewData()){
                 $this->addFlash('alert','Il Faut au moins un agent pour cette mission');
             }else {
                 $em->persist($data);
@@ -80,8 +80,47 @@ class MissionController extends AbstractController
     #[Route('/mission/{id}/edit')]
     #[Entity('mission', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit(): Response
+    public function edit(ContactRepository $contactRepository,Mission $mission,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , MissionRepository $missionRepository): Response
     {
+        $missions = new Mission();
+        $em = $manager->getManager();
+        $form = $this->createForm(MissionType::class,$mission);
+        $form->handleRequest($request);
+        $error=null;
+        $data = $form->getData($missions);
+        if ($data){
+            $error = $validator->validate($data);
+        }
+        if ($form->isSubmitted() && $form->isValid()){
+            $missionAgent = $missionRepository->findOneBy([
+                'code'=>$form->get('code')->getViewData()
+            ]);
+            $contactData = $form->get('contactMission')->getViewData();
+            $countMissionCountry=0;
+            foreach ($contactData as $contact){
+                $testeContact = $contactRepository->findOneBy([
+                    'id'=>$contact
+                ]);
+                if($testeContact->getNationality() === $form->get('country')->getViewData()){
+                    $countMissionCountry++;
+                }
+            }
+            if ($countMissionCountry < count($contactData)){
+                $this->addFlash('alert','Les contact doivent avoir la même nationalité que le pays de la mission');
+            } elseif($missionAgent && ($missionAgent->getId() != $mission->getId())){
+                $this->addFlash('alert','Il existe deja une mission avec ce code');
+            }elseif (!$form->get('agentMission')->getViewData()){
+                $this->addFlash('alert','Il Faut au moins un agent pour cette mission');
+            }else {
+                $em->flush();
+                $this->addFlash('success','La mission a bien été modifiée');
+                return $this->redirectToRoute('app_mission');
+            }
+        }
+        return $this->render('mission/edit.html.twig', [
+            'form'=>$form->createView(),
+            'errors'=>$error
+        ]);
 
     }
 
