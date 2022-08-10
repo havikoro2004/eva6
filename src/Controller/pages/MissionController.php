@@ -85,12 +85,12 @@ class MissionController extends AbstractController
 
     #[Route('/mission/{id}/delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Agent $agent ,ManagerRegistry $manager):Response {
+    public function delete(Mission $mission ,ManagerRegistry $manager):Response {
         $em = $manager->getManager();
-        $em->remove($agent);
+        $em->remove($mission);
         $em->flush();
-        $this->addFlash('success','L\'agent a bien été supprimé');
-        return $this->redirectToRoute('app_agent');
+        $this->addFlash('success','La mission a bien été supprimé');
+        return $this->redirectToRoute('app_mission');
     }
 
 }
