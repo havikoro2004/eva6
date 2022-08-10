@@ -2,16 +2,13 @@
 
 namespace App\Controller\pages;
 
-use App\Entity\Agent;
 use App\Entity\Mission;
 use App\Form\MissionType;
 use App\Repository\ContactRepository;
 use App\Repository\MissionRepository;
-use App\Repository\MissionStatusRepository;
-use App\Repository\MissionTypeRepository;
-use App\Repository\SpecialityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\PaginatorInterface;;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +20,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class MissionController extends AbstractController
 {
     #[Route('/mission', name: 'app_mission')]
-    #[IsGranted('ROLE_ADMIN')]
     public function index(MissionRepository $missionRepository ,PaginatorInterface $paginator,Request $request): Response
     {
         $error=null;
@@ -33,7 +29,6 @@ class MissionController extends AbstractController
             'controller_name' => 'missionController','missions'=>$resulta,'errors'=>$error
         ]);
     }
-
 
     #[Route('/mission/add', name: 'app_mission_add')]
     #[IsGranted('ROLE_ADMIN')]
@@ -50,7 +45,7 @@ class MissionController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()){
 
-        $contactData = $form->get('contactMission')->getViewData();
+        $contactData = $form->get('contact')->getViewData();
         $countMissionCountry=0;
                 foreach ($contactData as $contact){
                     $testeContact = $contactRepository->findOneBy([
@@ -66,7 +61,7 @@ class MissionController extends AbstractController
                 'code'=>$form->get('code')->getViewData()
             ])){
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
-            }elseif (!$form->get('agentMission')->getViewData()){
+            }elseif (!$form->get('agent')->getViewData()){
                 $this->addFlash('alert','Il Faut au moins un agent pour cette mission');
             }else {
                 $em->persist($data);
@@ -74,13 +69,34 @@ class MissionController extends AbstractController
                 $this->addFlash('success','La mission a bien été enregistrée');
                 return $this->redirectToRoute('app_mission');
             }
-
         }
-
         return $this->render('mission/add.html.twig', [
             'form'=>$form->createView(),
             'errors'=>$error
         ]);
+    }
+
+
+    #[Route('/mission/{id}/edit')]
+    #[Entity('mission', options: ['id' => 'id'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function edit(): Response
+    {
+
+    }
+
+    #[Route('/mission/{id}',name:'app_mission_id')]
+    #[Entity('mission', options: ['id' => 'id'])]
+    public function shoPage(Mission $mission ,MissionRepository $missionRepository):Response
+    {
+        $mission = $missionRepository->findOneBy([
+            'id'=>$mission->getId()
+        ]);
+
+        return $this->render('mission/mission_id.html.twig',[
+            'mission'=>$mission
+        ]);
+
     }
 
     #[Route('/mission/{id}/delete')]

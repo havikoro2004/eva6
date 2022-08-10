@@ -52,11 +52,10 @@ class MissionType extends AbstractType
                 'placeholder' => 'Choisir un status',
             ])
 
-            ->add('agentMission',EntityType::class,[
+            ->add('agent',EntityType::class,[
                 'class' =>Agent::class,
                 'multiple' => true,
                 'expanded' => true,
-                'mapped' => false,
                 'choice_label' => function ($agent) {
 
                     return $agent->getCode()
@@ -64,10 +63,9 @@ class MissionType extends AbstractType
 
                 }
             ])
-            ->add('contactMission',EntityType::class,[
+            ->add('contact',EntityType::class,[
                 'class' =>Contact::class,
                 'multiple' => true,
-                'mapped' => false,
                 'expanded' => true,
                 'choice_label' => function ($contact) {
 
