@@ -22,7 +22,7 @@ class Speciality
     #[Assert\NotBlank]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Agent::class, mappedBy: 'speciality')]
+    #[ORM\ManyToMany(targetEntity: Agent::class, mappedBy: 'agentSpeciality')]
     private Collection $agents;
 
     public function __construct()

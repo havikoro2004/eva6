@@ -5,6 +5,7 @@ namespace App\Controller\pages;
 use App\Entity\Agent;
 use App\Form\AgentType;
 use App\Repository\AgentRepository;
+use App\Repository\SpecialityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -31,7 +32,8 @@ class AgentController extends AbstractController
 
     #[Route('/agent/add')]
     #[IsGranted('ROLE_ADMIN')]
-    public function add(ManagerRegistry $manager,Request $request,ValidatorInterface $validator,AgentRepository $agentRepository):Response{
+    public function add(SpecialityRepository $specialityRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator,AgentRepository $agentRepository):Response{
+        $specialitys = $specialityRepository->findAll();
         $agent = new Agent();
         $em = $manager->getManager();
         $form = $this->createForm(AgentType::class);
@@ -57,7 +59,8 @@ class AgentController extends AbstractController
 
         }
         return $this->render('agent/add.html.twig',[
-            'form'=>$form->createView(),'errors'=>$error
+            'form'=>$form->createView(),'errors'=>$error,
+            'specialitys'=>$specialitys
         ]);
     }
 
