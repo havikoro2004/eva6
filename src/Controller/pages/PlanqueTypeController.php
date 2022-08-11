@@ -4,6 +4,7 @@ namespace App\Controller\pages;
 
 use App\Entity\PlanqueType;
 use App\Form\PlanqueTypeType;
+use App\Repository\PlanqueRepository;
 use App\Repository\PlanqueTypeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -87,11 +88,12 @@ class PlanqueTypeController extends AbstractController
 
     #[Route('/planque/type/{id}/delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(PlanqueTypeRepository $planqueTypeRepository,PlanqueType $planqueType ,ManagerRegistry $manager):Response {
-        $verifyPlanque = $planqueTypeRepository->findOneBy([
-           'id'=>$planqueType->getId()
+    public function delete(PlanqueRepository $planqueRepository,PlanqueType $planqueType ,ManagerRegistry $manager):Response {
+        $verifyPlanque = $planqueRepository->findOneBy([
+           'type'=>$planqueType->getId()
         ]);
         if ($verifyPlanque){
+            dd($verifyPlanque);
             $this->addFlash('alert','Vous ne pouvez pas supprimer ce type car il appartient à une planque');
         } else {
             $em = $manager->getManager();
