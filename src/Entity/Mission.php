@@ -34,6 +34,10 @@ class Mission
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateFin = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Speciality $speciality = null;
+    
     #[ORM\ManyToOne(inversedBy: 'mission')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MissionType $type = null;
