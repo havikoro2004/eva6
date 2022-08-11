@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+ {% block body %}
+     {% set name='Modifier' %}
+     {% include 'components/_header.html.twig' %}
+     {% include 'components/_navbar.html.twig' %}
+     <div class="container text-center mt-4">
+     {% include 'components/planque/_messages_flash.html.twig' %}
+     <h1 class="m-5 text-dark">Modifier l'agent</h1>
+     {% include 'components/planque/_form.html.twig' %}
+     <div>
+ {% endblock %}

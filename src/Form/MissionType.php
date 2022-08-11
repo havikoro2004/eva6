@@ -6,7 +6,9 @@ use App\Entity\Agent;
 use App\Entity\Contact;
 use App\Entity\Mission;
 use App\Entity\MissionStatus;
+use App\Entity\Planque;
 use App\Entity\Speciality;
+use App\Entity\Target;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -51,6 +53,16 @@ class MissionType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'Choisir un status',
             ])
+            ->add('targetMission',EntityType::class,[
+                'class' =>Target::class,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => function ($target) {
+                    return $target->getCode()
+                        .' '. '('.Countries::getName($target->getNationality()).')' ;
+
+                }
+            ])
 
             ->add('agentMission',EntityType::class,[
                 'class' =>Agent::class,
@@ -71,6 +83,16 @@ class MissionType extends AbstractType
 
                     return $contact->getCode()
                         .' '. '('.Countries::getName($contact->getNationality()).') ' ;
+
+                }
+            ])
+            ->add('planqueMission',EntityType::class,[
+                'class' =>Planque::class,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => function ($planque) {
+                    return $planque->getCode()
+                        .' '. '('.Countries::getName($planque->getCountry()).')' ;
 
                 }
             ]);

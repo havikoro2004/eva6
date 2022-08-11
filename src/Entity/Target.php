@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TargetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,9 +31,14 @@ class Target
     #[ORM\Column(length: 255)]
     private ?string $nationality = null;
 
-    #[ORM\ManyToOne(inversedBy: 'target')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Mission $mission = null;
+    #[ORM\ManyToMany(targetEntity: Mission::class, mappedBy: 'targetMission')]
+    private Collection $missions;
+
+    public function __construct()
+    {
+        $this->missions = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -98,15 +105,31 @@ class Target
         return $this;
     }
 
-    public function getMission(): ?Mission
+    /**
+     * @return Collection<int, Mission>
+     */
+    public function getMissions(): Collection
     {
-        return $this->mission;
+        return $this->missions;
     }
 
-    public function setMission(?Mission $mission): self
+    public function addMission(Mission $mission): self
     {
-        $this->mission = $mission;
+        if (!$this->missions->contains($mission)) {
+            $this->missions->add($mission);
+            $mission->addTargetMission($this);
+        }
 
         return $this;
     }
+
+    public function removeMission(Mission $mission): self
+    {
+        if ($this->missions->removeElement($mission)) {
+            $mission->removeTargetMission($this);
+        }
+
+        return $this;
+    }
+
 }

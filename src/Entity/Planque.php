@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PlanqueRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,7 +17,7 @@ class Planque
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $code = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $adresse = null;
@@ -27,23 +29,27 @@ class Planque
     #[ORM\JoinColumn(nullable: false)]
     private ?PlanqueType $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'planque')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Mission $mission = null;
+    #[ORM\ManyToMany(targetEntity: Mission::class, mappedBy: 'planqueMission')]
+    private Collection $missions;
+
+    public function __construct()
+    {
+        $this->missions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getCode(): ?string
     {
-        return $this->name;
+        return $this->code;
     }
 
-    public function setName(string $name): self
+    public function setCode(string $code): self
     {
-        $this->name = $name;
+        $this->code = $code;
 
         return $this;
     }
@@ -84,15 +90,31 @@ class Planque
         return $this;
     }
 
-    public function getMission(): ?Mission
+    /**
+     * @return Collection<int, Mission>
+     */
+    public function getMissions(): Collection
     {
-        return $this->mission;
+        return $this->missions;
     }
 
-    public function setMission(?Mission $mission): self
+    public function addMission(Mission $mission): self
     {
-        $this->mission = $mission;
+        if (!$this->missions->contains($mission)) {
+            $this->missions->add($mission);
+            $mission->addPlanqueMission($this);
+        }
 
         return $this;
     }
+
+    public function removeMission(Mission $mission): self
+    {
+        if ($this->missions->removeElement($mission)) {
+            $mission->removePlanqueMission($this);
+        }
+
+        return $this;
+    }
+
 }

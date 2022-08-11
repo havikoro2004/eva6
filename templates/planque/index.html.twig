@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+ {% block body %}
+     {% include 'components/_header.html.twig' %}
+     {% include 'components/_navbar.html.twig' %}
+     <div class="container mt-4">
+         {% include 'components/planque/_messages_flash.html.twig' %}
+         <h1 class="my-5 text-dark text-center">Planques</h1>
+         <div class="container text-center">
+             <a href="/planque/add" class="btn btn-success">Ajouter une nouvelle planque</a>
+         </div>
+     </div>
+     <div class="container">
+         <div class="row">
+             {% if planques is not empty %}
+                 <table class="table m-5 col text-center">
+                     <tr>
+                         <th scope="col">Code</th>
+                         <th scope="col">Adresse</th>
+                         <th scope="col">Pays</th>
+                         <th scope="col">Type</th>
+                         {% if app.user %}
+                             <th scope="col">Modifier</th>
+                             <th scope="col">Supprimer</th>
+                         {% endif %}
+                     </tr>
+                     {% for planque in planques %}
+                         <tr>
+                             <td>{{ planque.code }}</td>
+                             <td>{{ planque.adresse }}</td>
+                             <td>{{ planque.country|country_name}}</td>
+                             <td>{{ planque.type }}</td>
+                             {% if app.user %}
+                                 <td>
+                                     <a class="btn btn-primary" href="/planque/{{ planque.id }}/edit">Modifier</a>
+                                 </td>
+                                 <td>{% include 'components/planque/_modal.html.twig' %}
+                                     {% block button %}
+                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ planque.id }}">
+                                             Suprimer
+                                         </button>
+                                     {% endblock %}
+                                 </td>
+                             {% endif %}
+                         </tr>
+                     {% endfor %}
+                 </table>
+             {% else %}
+                 <div class="alert alert-dark mt-4 container text-center" style="width: 92%">Il n'y a pas encore de planque ajoutée</div>
+             {% endif %}
+         </div>
+         <div class="Page navigation example d-flex justify-content-center">
+             <div>
+                 {{ knp_pagination_render(planques,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+             </div>
+         </div>
+
+     </div>
+
+ {% endblock %}

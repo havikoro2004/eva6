@@ -58,6 +58,12 @@ class Mission
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'missions')]
     private Collection $contactMission;
 
+    #[ORM\ManyToMany(targetEntity: Target::class, inversedBy: 'missions')]
+    private Collection $targetMission;
+
+    #[ORM\ManyToMany(targetEntity: Planque::class, inversedBy: 'missions')]
+    private Collection $planqueMission;
+
     public function __construct()
     {
 
@@ -65,6 +71,8 @@ class Mission
         $this->planque = new ArrayCollection();
         $this->agentMission = new ArrayCollection();
         $this->contactMission = new ArrayCollection();
+        $this->targetMission = new ArrayCollection();
+        $this->planqueMission = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +293,54 @@ class Mission
     public function removeContactMission(Contact $contactMission): self
     {
         $this->contactMission->removeElement($contactMission);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Target>
+     */
+    public function getTargetMission(): Collection
+    {
+        return $this->targetMission;
+    }
+
+    public function addTargetMission(Target $targetMission): self
+    {
+        if (!$this->targetMission->contains($targetMission)) {
+            $this->targetMission->add($targetMission);
+        }
+
+        return $this;
+    }
+
+    public function removeTargetMission(Target $targetMission): self
+    {
+        $this->targetMission->removeElement($targetMission);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Planque>
+     */
+    public function getPlanqueMission(): Collection
+    {
+        return $this->planqueMission;
+    }
+
+    public function addPlanqueMission(Planque $planqueMission): self
+    {
+        if (!$this->planqueMission->contains($planqueMission)) {
+            $this->planqueMission->add($planqueMission);
+        }
+
+        return $this;
+    }
+
+    public function removePlanqueMission(Planque $planqueMission): self
+    {
+        $this->planqueMission->removeElement($planqueMission);
 
         return $this;
     }
