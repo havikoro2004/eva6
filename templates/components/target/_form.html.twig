@@ -1,14 +1,14 @@
 <div class="container text-center">
     <div class="container text-left">
         {{ form_start(form) }}
+        {{ form_label(form, 'Code')}}
+        {{ form_widget(form.code , {'attr': {'placeholder': 'Ajouter un code','class':'form-control mb-2'}}) }}
         {{ form_label(form, 'Le nom')}}
         {{ form_widget(form.firstName , {'attr': {'placeholder': 'Ajouter un nom','class':'form-control mb-2'}}) }}
         {{ form_label(form, 'Le prénom')}}
         {{ form_widget(form.lastName , {'attr': {'placeholder': 'Ajouter un prénom','class':'form-control mb-2'}}) }}
         {{ form_label(form, 'Date de naissance')}}
         {{ form_widget(form.birthDay , {'attr': {'class':'form-control mb-2'}}) }}
-        {{ form_label(form, 'Code')}}
-        {{ form_widget(form.code , {'attr': {'placeholder': 'Ajouter un code','class':'form-control mb-2'}}) }}
         {{ form_label(form, 'Nationalité')}}
         {{ form_widget(form.nationality , {'attr': {'class':'form-control mb-2'}}) }}
         <button class="btn btn-primary mt-2 mb-5">{% block btn %}{{ name }}{% endblock%} </button>
