@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+ {% block body %}
+     {% include 'components/_header.html.twig' %}
+     {% include 'components/_navbar.html.twig' %}
+     <div class="container mt-4">
+         {% include 'components/target/_messages_flash.html.twig' %}
+         <h1 class="my-5 text-dark text-center">Cibles</h1>
+         <div class="container text-center">
+             <a href="/target/add" class="btn btn-success">Ajouter une nouvelle cible</a>
+         </div>
+     </div>
+     <div class="container">
+         <div class="row">
+             {% if targets is not empty %}
+                 <table class="table m-5 col text-center">
+                     <tr>
+                         <th scope="col">Nom</th>
+                         <th scope="col">Prénom</th>
+                         <th scope="col">Date de naissance</th>
+                         <th scope="col">Code</th>
+                         <th scope="col">Nationalité</th>
+                         {% if app.user %}
+                             <th scope="col">Modifier</th>
+                             <th scope="col">Supprimer</th>
+                         {% endif %}
+                     </tr>
+                     {% for cible in targets %}
+                         <tr>
+                             <td>{{ cible.firstName }}</td>
+                             <td>{{ cible.lastName }}</td>
+                             <td>{{ cible.birthDay.format('d-m-Y') }}</td>
+                             <td>{{ cible.code }}</td>
+                             <td>{{ cible.nationality|country_name }}</td>
+                             {% if app.user %}
+                                 <td>
+                                     <a class="btn btn-primary" href="/target/{{ cible.id }}/edit">Modifier</a>
+                                 </td>
+                                 <td>{% include 'components/target/_modal.html.twig' %}
+                                     {% block button %}
+                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ cible.id }}">
+                                             Suprimer
+                                         </button>
+                                     {% endblock %}
+                                 </td>
+                             {% endif %}
+                         </tr>
+                     {% endfor %}
+                 </table>
+             {% else %}
+                 <div class="alert alert-dark mt-4 container text-center" style="width: 92%">Il n'y a pas encore de cible ajoutée</div>
+             {% endif %}
+         </div>
+         <div class="Page navigation example d-flex justify-content-center">
+             <div>
+                 {{ knp_pagination_render(targets,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+             </div>
+         </div>
+
+     </div>
+
+ {% endblock %}
