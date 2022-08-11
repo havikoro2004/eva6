@@ -155,7 +155,6 @@ class MissionController extends AbstractController
         $mission = $missionRepository->findOneBy([
             'id'=>$mission->getId()
         ]);
-
         return $this->render('mission/mission_id.html.twig',[
             'mission'=>$mission
         ]);

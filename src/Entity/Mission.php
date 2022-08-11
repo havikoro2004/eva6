@@ -42,16 +42,6 @@ class Mission
     #[ORM\JoinColumn(nullable: false)]
     private ?MissionStatus $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'mission')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Speciality $speciality = null;
-
-    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Target::class, orphanRemoval: true)]
-    private Collection $target;
-
-    #[ORM\OneToMany(mappedBy: 'mission', targetEntity: Planque::class, orphanRemoval: true)]
-    private Collection $planque;
-
     #[ORM\ManyToMany(targetEntity: Agent::class, inversedBy: 'missions')]
     private Collection $agentMission;
 

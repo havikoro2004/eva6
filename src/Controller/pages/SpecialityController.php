@@ -4,6 +4,7 @@ namespace App\Controller\pages;
 
 use App\Entity\Speciality;
 use App\Form\SpecialityType;
+use App\Repository\AgentRepository;
 use App\Repository\MissionRepository;
 use App\Repository\SpecialityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -89,18 +90,13 @@ class SpecialityController extends AbstractController
 
     #[Route('/speciality/{id}/delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(MissionRepository $missionRepository ,Speciality $speciality ,ManagerRegistry $manager):Response {
-        $result = $missionRepository->findOneBy([
-            'speciality'=>$speciality->getId()
-        ]);
-        if ($result){
-            $this->addFlash('alert','Vous ne pouvez pas supprimer cette spécialité car elle appartient à la mission '.$result->getCode().'');
-        } else {
+    public function delete(AgentRepository $agentRepository,MissionRepository $missionRepository ,Speciality $speciality ,ManagerRegistry $manager):Response {
+
             $em = $manager->getManager();
             $em->remove($speciality);
             $em->flush();
             $this->addFlash('success','La spécialité a bien été suprimé');
-        }
+
         return $this->redirectToRoute('app_speciality');
     }
 

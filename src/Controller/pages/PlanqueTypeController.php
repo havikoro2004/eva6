@@ -87,11 +87,18 @@ class PlanqueTypeController extends AbstractController
 
     #[Route('/planque/type/{id}/delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(PlanqueType $planqueType ,ManagerRegistry $manager):Response {
-        $em = $manager->getManager();
-        $em->remove($planqueType);
-        $em->flush();
-        $this->addFlash('success','Le type de planque a bien été suprimé');
+    public function delete(PlanqueTypeRepository $planqueTypeRepository,PlanqueType $planqueType ,ManagerRegistry $manager):Response {
+        $verifyPlanque = $planqueTypeRepository->findOneBy([
+           'id'=>$planqueType->getId()
+        ]);
+        if ($verifyPlanque){
+            $this->addFlash('alert','Vous ne pouvez pas supprimer ce type car il appartient à une planque');
+        } else {
+            $em = $manager->getManager();
+            $em->remove($planqueType);
+            $em->flush();
+            $this->addFlash('success','Le type de planque a bien été suprimé');
+        }
         return $this->redirectToRoute('app_planque_type');
     }
 }

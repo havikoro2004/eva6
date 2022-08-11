@@ -101,7 +101,7 @@ class TargetController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function delete(MissionRepository $mission,Target $target ,ManagerRegistry $manager):Response {
         $missions = $mission->findOneBy([
-            'id'=>$target->getMission()
+            'id'=>$target->getId()
         ]);
         if ($missions){
             $this->addFlash('alert','La cible ne peut pas être supprimer car elle appartient à la mission '.$missions->getCode().'');
