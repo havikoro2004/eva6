@@ -4,6 +4,7 @@ namespace App\Controller\pages;
 
 use App\Entity\Mission;
 use App\Form\MissionType;
+use App\Repository\AgentRepository;
 use App\Repository\ContactRepository;
 use App\Repository\MissionRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,18 +33,49 @@ class MissionController extends AbstractController
 
     #[Route('/mission/add', name: 'app_mission_add')]
     #[IsGranted('ROLE_ADMIN')]
-    public function add(ContactRepository $contactRepository ,MissionRepository $missionRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
+    public function add(AgentRepository $agentRepository ,ContactRepository $contactRepository ,MissionRepository $missionRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
     {
         $mission = new Mission();
         $em = $manager->getManager();
         $form = $this->createForm(MissionType::class);
         $form->handleRequest($request);
         $error=null;
+
         $data = $form->getData($mission);
         if ($data){
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
+        $nombreAgentValide = 0;
+        $agentsNonValide=[];
+        $nameAgentNonvalide=[];
+         $agents = $form->get('agentMission')->getViewData();
+        foreach ($agents as $agent)
+        {
+            $specialityAgent = $agentRepository->findOneBy([
+                'id'=>$agent
+            ]);
+            $result = $specialityAgent->getAgentSpeciality()->getValues();
+
+            foreach ($result as $special){
+                if ($special->getId() == $form->get('speciality')->getViewData()){
+                    $nombreAgentValide++;
+                }
+            }
+            if ($nombreAgentValide == 0){
+                $agentsNonValide[]=$agent;
+            }
+        }
+           foreach ($agentsNonValide as $idAgentNNValide){
+                $nameAgent = $agentRepository->findOneBy([
+                    'id'=>$idAgentNNValide
+                ]);
+
+                if ($nameAgent){
+                    $nameAgentNonvalide[]=$nameAgent->getCode();
+                }
+           }
+
 
         $contactData = $form->get('contactMission')->getViewData();
         $countMissionCountry=0;
@@ -63,7 +95,11 @@ class MissionController extends AbstractController
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
             }elseif (!$form->get('agentMission')->getViewData()){
                 $this->addFlash('alert','Il Faut au moins un agent pour cette mission');
-            }else {
+            }elseif($nombreAgentValide != $form->get('agentMission')->getViewData()){
+               foreach ($nameAgentNonvalide as $name){
+                   $this->addFlash('alert','L\'agent '.$name.' doit avoir la spécialité de la mission requise');
+               }
+            } else {
                 $em->persist($data);
                 $em->flush();
                 $this->addFlash('success','La mission a bien été enregistrée');

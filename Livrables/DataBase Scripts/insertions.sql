@@ -18,12 +18,6 @@ INSERT INTO status (name) VALUES ('en cours'),('terminée'),('echec');
 /** Table planque_type **/
 INSERT INTO planque_type (name) VALUES ('maroc'),('asie'),('italie');
 
-/** Table mission **/
-INSERT INTO mission (code, title, description, country, dateDebut, dateFin, type, status, speciality) VALUES
-('20231','verdon','dans un coin de ...','France','2022-06-20','2024-02-05',1,1,1),
-('zedz22','Ossova','kill le maitre ...','USA','2023-06-20','2023-12-05',2,2,2),
-('202zzed31','zulu','Zulu est un membre de...','UK','2022-06-20','2024-02-24',1,1,1);
-
 /** Table agent **/
 INSERT INTO agent (firstName, lastName, birthDay, code, nationality) VALUES
 ('mala','amine','1990-02-23','malabo','Francaise'),
@@ -34,9 +28,6 @@ INSERT INTO agent (firstName, lastName, birthDay, code, nationality) VALUES
 /** Table agent_speciality **/
 INSERT INTO agent_speciality (agenId, specialityId) VALUES (2,1),(2,2),(3,1),(4,3);
 
-/** Table agent_mission **/
-INSERT INTO agent_mission (agenId, missionId) VALUES (2,1),(2,2),(3,1),(4,3);
-
 /** Table contact **/
 INSERT INTO contact (firstName, lastName, birthDay, code, nationality) VALUES
 ('Mr bein','Joe','1990-02-16','2013z','Quebecoise'),
@@ -44,20 +35,38 @@ INSERT INTO contact (firstName, lastName, birthDay, code, nationality) VALUES
 ('Jean','Senna','1975-12-16','xsqq','Francaise'),
 ('Jean baptiste','kora','1975-12-16','azsazsz','Francaise');
 
+/** Table planque **/
+INSERT INTO planque (name, adresse, country, type) VALUES
+('ruch','106 impasse de la kokat 74144 ','france',1),
+('baltek','2013 avenue saint pierre 74144 ','usa',2),
+('ruch','106 impasse de la malto 74144 ','uk',3);
+
+/** Table target **/
+INSERT INTO target (firstName, lastName, birthDay, code, nationality) VALUES
+('emile','zola','1990-12-02','05zfer','italienne'),
+('zata','morkov','1992-05-13','zedzed','russe'),
+('Najat','bassla','1874-06-03','05zfer','marocaine');
+
+/** Table mission **/
+INSERT INTO mission (code, title, description, country, dateDebut, dateFin, type, status, speciality) VALUES
+('20231','verdon','dans un coin de ...','France','2022-06-20','2024-02-05',1,1,1),
+('zedz22','Ossova','kill le maitre ...','USA','2023-06-20','2023-12-05',2,2,2),
+('202zzed31','zulu','Zulu est un membre de...','UK','2022-06-20','2024-02-24',1,1,1);
+
+/** Table agent_mission **/
+INSERT INTO agent_mission (agenId, missionId) VALUES (2,1),(2,2),(3,1),(4,3);
+
+
+/** Table target_mission **/
+INSERT INTO target_mission (targetId, missionId) VALUES (2,1),(2,2),(3,1),(2,3);
+
+/** Table planque_mission **/
+INSERT INTO planque_mission (planqueId, missionId) VALUES (2,1),(2,2),(3,1),(2,3);
+
 /** Table contact_mission **/
 INSERT INTO contact_mission (contactId, missionId) VALUES (2,1),(2,2),(3,1),(4,3);
 
-/** Table target **/
-INSERT INTO target (firstName, lastName, birthDay, code, nationality, mission) VALUES
-('emile','zola','1990-12-02','05zfer','italienne','1'),
-('zata','morkov','1992-05-13','zedzed','russe','2'),
-('Najat','bassla','1874-06-03','05zfer','marocaine','1');
 
-/** Table planque **/
-INSERT INTO planque (name, adresse, country, type, mission) VALUES
-('ruch','106 impasse de la kokat 74144 ','france',1,1),
-('baltek','2013 avenue saint pierre 74144 ','usa',2,2),
-('ruch','106 impasse de la malto 74144 ','uk',3,3);
 
 
 
