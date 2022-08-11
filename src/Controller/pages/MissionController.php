@@ -7,6 +7,7 @@ use App\Form\MissionType;
 use App\Repository\AgentRepository;
 use App\Repository\ContactRepository;
 use App\Repository\MissionRepository;
+use App\Repository\PlanqueRepository;
 use App\Repository\TargetRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;;
@@ -34,14 +35,20 @@ class MissionController extends AbstractController
 
     #[Route('/mission/add', name: 'app_mission_add')]
     #[IsGranted('ROLE_ADMIN')]
-    public function add(TargetRepository $targets,AgentRepository $agentRepository ,ContactRepository $contactRepository ,MissionRepository $missionRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
+    public function add(PlanqueRepository $planqueRepository ,TargetRepository $targets,AgentRepository $agentRepository ,ContactRepository $contactRepository ,MissionRepository $missionRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
     {
+
         $mission = new Mission();
         $em = $manager->getManager();
         $form = $this->createForm(MissionType::class);
         $form->handleRequest($request);
         $error=null;
         $targetsNationality=[];
+
+        $contacts = $contactRepository->findAll();
+        $cibles = $targets->findAll();
+        $planques = $planqueRepository->findAll();
+        $agentts = $agentRepository->findAll();
 
         $data = $form->getData($mission);
         if ($data){
@@ -68,20 +75,28 @@ class MissionController extends AbstractController
 
             if ($targetsNationality){
                 foreach ($targetsNationality as $key=>$value){
-                    $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationaltiy');
+                    $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationalité');
                 }
             } elseif ($missionRepository->findOneBy([
                 'code'=>$form->get('code')->getViewData()
             ])){
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
-            }else {
-                $this->addFlash('success','Mission enregistrée avec succes');
+            }elseif (!$form->get('agentMission')->getViewData()){
+                $this->addFlash('alert','Vous devez définir au moins un agent pour cette mission');
+            }elseif (!$form->get('targetMission')->getViewData()){
+                $this->addFlash('alert','Vous devez définir au moins une cible pour cette mission');
+            }elseif (!$form->get('contactMission')->getViewData()){
+                $this->addFlash('alert','Vous devez définir au moins un contact pour cette mission');
             }
 
         }
         return $this->render('mission/add.html.twig', [
             'form'=>$form->createView(),
-            'errors'=>$error
+            'errors'=>$error,
+            'contacts'=>$contacts,
+            'planques'=>$planques,
+            'agentts'=>$agentts,
+            'cibles'=>$cibles
         ]);
     }
 

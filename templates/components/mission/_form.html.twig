@@ -31,15 +31,27 @@
         {{ form_label(form, 'Cibles')}}
         {{ form_widget(form.targetMission , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
         <a href="/target/add" class="btn btn-success mb-2" style="min-width: 12rem">Ajouter une cible</a>
+        {% if cibles is empty %}
+            <span>Aucune contact ajoutée</span>
+        {% endif %}
         {{ form_label(form, 'Agents')}}
         {{ form_widget(form.agentMission , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
         <a href="/agent/add" class="btn btn-success mb-2" style="min-width: 12rem">Ajouter un agent</a>
+        {% if agentts is empty %}
+            <span>Aucun agent ajouté</span>
+        {% endif %}
         {{ form_label(form, 'Contacts')}}
         {{ form_widget(form.contactMission , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
         <a href="/contact/add" class="btn btn-success mb-2" style="min-width: 12rem">Ajouter un contact</a>
+        {% if contacts is empty %}
+            <span>Aucun contact ajouté</span>
+        {% endif %}
         {{ form_label(form, 'Planques')}}
         {{ form_widget(form.planqueMission , {'attr': {'placeholder': 'Ajouter une date de fin','class':'d-flex align-content-center flex-wrap mb-2'}}) }}
         <a href="/planque/add" class="btn btn-success mb-2" style="min-width: 12rem">Ajouter une planque</a>
+        {% if planques is empty %}
+            <span>Aucune planque ajoutée</span>
+        {% endif %}
         <div class="container text-center">
             <button class="btn btn-primary mb-5" style="min-width: 12rem">{% block btn %}{{ name }}{% endblock%} </button>
         </div>
@@ -47,4 +59,3 @@
 
     </div>
 </div>
-
