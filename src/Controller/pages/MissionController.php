@@ -70,6 +70,12 @@ class MissionController extends AbstractController
                 foreach ($targetsNationality as $key=>$value){
                     $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationaltiy');
                 }
+            } elseif ($missionRepository->findOneBy([
+                'code'=>$form->get('code')->getViewData()
+            ])){
+                $this->addFlash('alert','Il existe deja une mission avec ce code');
+            }else {
+                $this->addFlash('success','Mission enregistrée avec succes');
             }
 
         }
