@@ -6,6 +6,17 @@
          {% include 'components/mission/_messages_flash.html.twig' %}
          <h1 class="my-5 text-dark text-center">Missions</h1>
          <div class="container text-center">
+             {{ form_start(form) }}
+             <div class="d-flex">
+                 {{ form_widget(form.code , {'attr': {'placeholder': 'Chercher une mission par son code','class':'form-control mb-2 mr-2'}}) }}
+                 <button class="btn btn-success mb-5" style="min-width: 12rem">Chercher</button>
+             </div>
+             {{ form_end(form) }}
+             {% if result is not empty %}
+                 <div class="alert alert-success">
+                     Résultat trouvé =>   <a href="/mission/{{ result.id }}">Mission : {{ result.code }}</a>
+                 </div>
+             {% endif %}
              <a href="/mission/add" class="btn btn-success">Ajouter une nouvelle mission</a>
          </div>
      </div>
