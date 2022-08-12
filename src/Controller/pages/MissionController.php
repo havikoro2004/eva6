@@ -128,6 +128,8 @@ class MissionController extends AbstractController
         $form->handleRequest($request);
         $error=null;
         $targetsNationality=[];
+        $contactMission=[];
+        $planqueMissionNationality=[];
         $contacts = $contactRepository->findAll();
         $cibles = $targets->findAll();
         $planques = $planqueRepository->findAll();
@@ -138,6 +140,9 @@ class MissionController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
+            $codeMissionInsered =$missionRepository->findOneBy([
+                'code'=>$form->get('code')->getViewData()
+            ]);
             $formAgent = $form->get('agentMission')->getViewData();
             $formTargets = $form->get('targetMission')->getViewData();
             foreach ($formTargets as $target){
@@ -160,7 +165,7 @@ class MissionController extends AbstractController
                     'id'=>$planque
                 ]);
                 if ($planqueNationality->getCountry() != $form->get('country')->getViewData()){
-                    $this->addFlash('alert','La planque '.$planqueNationality->getCode().' doit avoir la même nationalité que la mission');
+                    $planqueMissionNationality[]=$planqueNationality->getType();
                 }
             }
             foreach ($form->get('contactMission')->getViewData() as $contacts){
@@ -168,12 +173,21 @@ class MissionController extends AbstractController
                     'id'=>$contacts
                 ]);
                 if ($contactNationality->getNationality() != $form->get('country')->getViewData()){
-                   $this->addFlash('alert','Le contact '.$contactNationality->getCode().' doit avoir la même nationalité que la mission');
+                    $contactMission[]=$contactNationality->getCode();
                 }
             }
             if ($targetsNationality){
                 foreach ($targetsNationality as $key=>$value){
                     $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationalité');
+                }
+            }elseif ($contactMission){
+                foreach ($contactMission as $contactNvalide){
+                    $this->addFlash('alert','le contact '.$contactNvalide.' doit avoir la même nationalité que le pays de la mission');
+                }
+
+            }elseif ($planqueMissionNationality){
+                foreach ($planqueMissionNationality as $planque){
+                    $this->addFlash('alert','la planque '.$planque.' doit avoir la même nationalité que le pays de la mission');
                 }
             }elseif ($missionRepository->findOneBy([
                 'code'=>$form->get('code')->getViewData()
@@ -215,6 +229,7 @@ class MissionController extends AbstractController
         $agentts = $agentRepository->findAll();
         $targetsNationality=[];
         $contactMission=[];
+        $planqueMissionNationality=[];
 
         $em = $manager->getManager();
         $form = $this->createForm(MissionType::class,$mission);
@@ -250,7 +265,7 @@ class MissionController extends AbstractController
                     'id'=>$planque
                 ]);
                 if ($planqueNationality->getCountry() != $form->get('country')->getViewData()){
-                    $this->addFlash('alert','La planque '.$planqueNationality->getCode().' doit avoir la même nationalité que la mission');
+                    $planqueMissionNationality[]=$planqueNationality->getType();
                 }
             }
             foreach ($form->get('contactMission')->getViewData() as $contacts){
@@ -270,7 +285,12 @@ class MissionController extends AbstractController
                     $this->addFlash('alert','le contact '.$contactNvalide.' doit avoir la même nationalité que le pays de la mission');
                 }
 
-            } elseif ($codeMissionInsered && ($codeMissionInsered->getId() != $mission->getId())){
+            }elseif ($planqueMissionNationality){
+                foreach ($planqueMissionNationality as $planque){
+                    $this->addFlash('alert','la planque '.$planque.' doit avoir la même nationalité que le pays de la mission');
+                }
+            }
+            elseif ($codeMissionInsered && ($codeMissionInsered->getId() != $mission->getId())){
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
             }elseif (!$form->get('agentMission')->getViewData()){
                 $this->addFlash('alert','Vous devez définir au moins un agent pour cette mission');
