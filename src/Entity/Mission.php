@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionRepository::class)]
@@ -348,5 +349,18 @@ class Mission
         $this->planqueMission->removeElement($planqueMission);
 
         return $this;
+    }
+
+    public function getAllArray():Array
+    {
+        return [
+            'id'=>$this->getId(),
+            'code'=>$this->getCode(),
+            'title'=>$this->getTitle(),
+            'dateDebut'=>$this->getDateDebut(),
+            'dateFin'=>$this->getDateFin(),
+
+        ];
+
     }
 }

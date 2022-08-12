@@ -47,6 +47,77 @@ class MissionController extends AbstractController
         ]);
     }
 
+    /*-----------------------------------   Les requettes AJAX AXIOS ----------------------------*/
+
+
+    #[Route('/mission/all', name: 'app_mission_all')]
+    public function all(MissionRepository $missionRepository):Response{
+        $arrayOfUsers = [];
+        $missions = $missionRepository->findAll();
+
+        foreach ($missions as $user) {
+            $arrayOfUsers[] = $user->getAllArray();
+        }
+        return $this->json($arrayOfUsers);
+
+    }
+    #[Route('/mission/termineted', name: 'app_mission_termineted')]
+    public function termineted(MissionRepository $missionRepository):Response{
+        $arrayOfUsers = [];
+        $missions = $missionRepository->findBy([
+            'status'=>9
+        ]);
+
+        foreach ($missions as $user) {
+            $arrayOfUsers[] = $user->getAllArray();
+        }
+        return $this->json($arrayOfUsers);
+
+    }
+
+    #[Route('/mission/encours', name: 'app_mission_encours')]
+    public function encours(MissionRepository $missionRepository):Response{
+        $arrayOfUsers = [];
+        $missions = $missionRepository->findBy([
+            'status'=>6
+        ]);
+        foreach ($missions as $user) {
+            $arrayOfUsers[] = $user->getAllArray();
+        }
+        return $this->json($arrayOfUsers);
+
+    }
+
+    #[Route('/mission/echec', name: 'app_mission_echec')]
+    public function echec(MissionRepository $missionRepository):Response{
+        $arrayOfUsers = [];
+        $missions = $missionRepository->findBy([
+            'status'=>8
+        ]);
+
+        foreach ($missions as $user) {
+            $arrayOfUsers[] = $user->getAllArray();
+        }
+        return $this->json($arrayOfUsers);
+
+    }
+
+    #[Route('/mission/prepare', name: 'app_mission_prepare')]
+    public function prepare(MissionRepository $missionRepository):Response{
+        $arrayOfUsers = [];
+        $missions = $missionRepository->findBy([
+            'status'=>7
+        ]);
+
+        foreach ($missions as $user) {
+            $arrayOfUsers[] = $user->getAllArray();
+        }
+        return $this->json($arrayOfUsers);
+
+    }
+
+    /*-----------------------------------   Les requettes AJAX AXIOS FIN ------------------------------------*/
+
     #[Route('/mission/add', name: 'app_mission_add')]
     #[IsGranted('ROLE_ADMIN')]
     public function add(PlanqueRepository $planqueRepository ,TargetRepository $targets,AgentRepository $agentRepository ,ContactRepository $contactRepository ,MissionRepository $missionRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
@@ -97,14 +168,14 @@ class MissionController extends AbstractController
                     'id'=>$contacts
                 ]);
                 if ($contactNationality->getNationality() != $form->get('country')->getViewData()){
-                    $this->addFlash('alert','Le contact '.$contactNationality->getCode().' doit avoir la même nationalité que la mission');
+                   $this->addFlash('alert','Le contact '.$contactNationality->getCode().' doit avoir la même nationalité que la mission');
                 }
             }
             if ($targetsNationality){
                 foreach ($targetsNationality as $key=>$value){
                     $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationalité');
                 }
-            } elseif ($missionRepository->findOneBy([
+            }elseif ($missionRepository->findOneBy([
                 'code'=>$form->get('code')->getViewData()
             ])){
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
@@ -143,6 +214,7 @@ class MissionController extends AbstractController
         $planques = $planqueRepository->findAll();
         $agentts = $agentRepository->findAll();
         $targetsNationality=[];
+        $contactMission=[];
 
         $em = $manager->getManager();
         $form = $this->createForm(MissionType::class,$mission);
@@ -186,13 +258,18 @@ class MissionController extends AbstractController
                     'id'=>$contacts
                 ]);
                 if ($contactNationality->getNationality() != $form->get('country')->getViewData()){
-                    $this->addFlash('alert','Le contact '.$contactNationality->getCode().' doit avoir la même nationalité que la mission');
+                    $contactMission[]=$contactNationality->getCode();
                 }
             }
             if ($targetsNationality){
                 foreach ($targetsNationality as $key=>$value){
                     $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationalité');
                 }
+            }elseif ($contactMission){
+                foreach ($contactMission as $contactNvalide){
+                    $this->addFlash('alert','le contact '.$contactNvalide.' doit avoir la même nationalité que le pays de la mission');
+                }
+
             } elseif ($codeMissionInsered && ($codeMissionInsered->getId() != $mission->getId())){
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
             }elseif (!$form->get('agentMission')->getViewData()){
