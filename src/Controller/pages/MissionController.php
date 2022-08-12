@@ -123,12 +123,13 @@ class MissionController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function edit(AgentRepository $agentRepository,TargetRepository $targets ,PlanqueRepository $planqueRepository,ContactRepository $contactRepository,Mission $mission,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , MissionRepository $missionRepository): Response
     {
+        $missions = new Mission();
         $contacts = $contactRepository->findAll();
         $cibles = $targets->findAll();
         $planques = $planqueRepository->findAll();
         $agentts = $agentRepository->findAll();
+        $targetsNationality=[];
 
-        $missions = new Mission();
         $em = $manager->getManager();
         $form = $this->createForm(MissionType::class,$mission);
         $form->handleRequest($request);
@@ -138,25 +139,54 @@ class MissionController extends AbstractController
             $error = $validator->validate($data);
         }
         if ($form->isSubmitted() && $form->isValid()){
-            $missionAgent = $missionRepository->findOneBy([
+            $codeMissionInsered =$missionRepository->findOneBy([
                 'code'=>$form->get('code')->getViewData()
             ]);
-            $contactData = $form->get('contactMission')->getViewData();
-            $countMissionCountry=0;
-            foreach ($contactData as $contact){
-                $testeContact = $contactRepository->findOneBy([
-                    'id'=>$contact
+            $formAgent = $form->get('agentMission')->getViewData();
+            $formTargets = $form->get('targetMission')->getViewData();
+            foreach ($formTargets as $target){
+                $result = $targets->findOneBy([
+                    'id'=>$target
                 ]);
-                if($testeContact->getNationality() === $form->get('country')->getViewData()){
-                    $countMissionCountry++;
+                $targetNationali = $result->getNationality();
+                foreach ($formAgent as $agents){
+                    $nbrAgent = $agentRepository->findOneBy([
+                        'id'=>$agents
+                    ]);
+
+                    if ($nbrAgent->getNationality() == $targetNationali){
+                        $targetsNationality +=[$nbrAgent->getCode() => $result->getCode()];
+                    }
                 }
             }
-            if ($countMissionCountry < count($contactData)){
-                $this->addFlash('alert','Les contact doivent avoir la même nationalité que le pays de la mission');
-            } elseif($missionAgent && ($missionAgent->getId() != $mission->getId())){
+            foreach ($form->get('planqueMission')->getViewData() as $planque){
+                $planqueNationality = $planqueRepository->findOneBy([
+                    'id'=>$planque
+                ]);
+                if ($planqueNationality->getCountry() != $form->get('country')->getViewData()){
+                    $this->addFlash('alert','La planque '.$planqueNationality->getCode().' doit avoir la même nationalité que la mission');
+                }
+            }
+            foreach ($form->get('contactMission')->getViewData() as $contacts){
+                $contactNationality = $contactRepository->findOneBy([
+                    'id'=>$contacts
+                ]);
+                if ($contactNationality->getNationality() != $form->get('country')->getViewData()){
+                    $this->addFlash('alert','Le contact '.$contactNationality->getCode().' doit avoir la même nationalité que la mission');
+                }
+            }
+            if ($targetsNationality){
+                foreach ($targetsNationality as $key=>$value){
+                    $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationalité');
+                }
+            } elseif ($codeMissionInsered && ($codeMissionInsered->getId() != $mission->getId())){
                 $this->addFlash('alert','Il existe deja une mission avec ce code');
             }elseif (!$form->get('agentMission')->getViewData()){
-                $this->addFlash('alert','Il Faut au moins un agent pour cette mission');
+                $this->addFlash('alert','Vous devez définir au moins un agent pour cette mission');
+            }elseif (!$form->get('targetMission')->getViewData()){
+                $this->addFlash('alert','Vous devez définir au moins une cible pour cette mission');
+            }elseif (!$form->get('contactMission')->getViewData()){
+                $this->addFlash('alert','Vous devez définir au moins un contact pour cette mission');
             }else {
                 $em->flush();
                 $this->addFlash('success','La mission a bien été modifiée');
