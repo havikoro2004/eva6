@@ -44,7 +44,7 @@ class MissionController extends AbstractController
         $form->handleRequest($request);
         $error=null;
         $targetsNationality=[];
-
+        $contactMission=[];
         $contacts = $contactRepository->findAll();
         $cibles = $targets->findAll();
         $planques = $planqueRepository->findAll();
@@ -72,7 +72,14 @@ class MissionController extends AbstractController
                     }
                 }
             }
-
+            foreach ($form->get('contactMission')->getViewData() as $contacts){
+                $contactNationality = $contactRepository->findOneBy([
+                    'id'=>$contacts
+                ]);
+                if ($contactNationality->getNationality() != $form->get('country')->getViewData()){
+                    $this->addFlash('alert','Le contact '.$contactNationality->getCode().' doit avoir la même nationalité que la mission');
+                }
+            }
             if ($targetsNationality){
                 foreach ($targetsNationality as $key=>$value){
                     $this->addFlash('alert','l\'agent '.$key.' et la cible '.$value.' ne doivent pas avoir la même nationalité');

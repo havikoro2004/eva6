@@ -37,7 +37,7 @@ class Mission
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Speciality $speciality = null;
-    
+
     #[ORM\ManyToOne(inversedBy: 'mission')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MissionType $type = null;
