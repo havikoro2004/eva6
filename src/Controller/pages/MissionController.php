@@ -37,14 +37,12 @@ class MissionController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function add(PlanqueRepository $planqueRepository ,TargetRepository $targets,AgentRepository $agentRepository ,ContactRepository $contactRepository ,MissionRepository $missionRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
     {
-
         $mission = new Mission();
         $em = $manager->getManager();
         $form = $this->createForm(MissionType::class);
         $form->handleRequest($request);
         $error=null;
         $targetsNationality=[];
-        $contactMission=[];
         $contacts = $contactRepository->findAll();
         $cibles = $targets->findAll();
         $planques = $planqueRepository->findAll();
@@ -72,6 +70,14 @@ class MissionController extends AbstractController
                     }
                 }
             }
+            foreach ($form->get('planqueMission')->getViewData() as $planque){
+                $planqueNationality = $planqueRepository->findOneBy([
+                    'id'=>$planque
+                ]);
+                if ($planqueNationality->getCountry() != $form->get('country')->getViewData()){
+                    $this->addFlash('alert','La planque '.$planqueNationality->getCode().' doit avoir la même nationalité que la mission');
+                }
+            }
             foreach ($form->get('contactMission')->getViewData() as $contacts){
                 $contactNationality = $contactRepository->findOneBy([
                     'id'=>$contacts
@@ -94,6 +100,10 @@ class MissionController extends AbstractController
                 $this->addFlash('alert','Vous devez définir au moins une cible pour cette mission');
             }elseif (!$form->get('contactMission')->getViewData()){
                 $this->addFlash('alert','Vous devez définir au moins un contact pour cette mission');
+            }else{
+                $em->persist($data);
+                $em->flush();
+                $this->addFlash('success','La nouvelle mission a bien été enregistrée');
             }
 
         }
@@ -111,8 +121,13 @@ class MissionController extends AbstractController
     #[Route('/mission/{id}/edit')]
     #[Entity('mission', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit(ContactRepository $contactRepository,Mission $mission,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , MissionRepository $missionRepository): Response
+    public function edit(AgentRepository $agentRepository,TargetRepository $targets ,PlanqueRepository $planqueRepository,ContactRepository $contactRepository,Mission $mission,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , MissionRepository $missionRepository): Response
     {
+        $contacts = $contactRepository->findAll();
+        $cibles = $targets->findAll();
+        $planques = $planqueRepository->findAll();
+        $agentts = $agentRepository->findAll();
+
         $missions = new Mission();
         $em = $manager->getManager();
         $form = $this->createForm(MissionType::class,$mission);
@@ -150,7 +165,11 @@ class MissionController extends AbstractController
         }
         return $this->render('mission/edit.html.twig', [
             'form'=>$form->createView(),
-            'errors'=>$error
+            'errors'=>$error,
+            'contacts'=>$contacts,
+            'planques'=>$planques,
+            'agentts'=>$agentts,
+            'cibles'=>$cibles,
         ]);
 
     }

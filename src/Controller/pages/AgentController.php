@@ -78,7 +78,9 @@ class AgentController extends AbstractController
     #[Route('/agent/{id}/edit')]
     #[Entity('agent', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function edite(Agent $agent,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , AgentRepository $agentRepository):Response {
+    public function edite(SpecialityRepository $specialityRepository ,Agent $agent,ManagerRegistry $manager,Request $request,ValidatorInterface $validator , AgentRepository $agentRepository):Response {
+        $specialitys = $specialityRepository->findAll();
+
         $em = $manager->getManager();
         $form = $this->createForm(AgentType::class,$agent);
         $form->handleRequest($request);
@@ -107,7 +109,8 @@ class AgentController extends AbstractController
         $agentInfo = $agentRepository->findAll();
         return $this->render('agent/edit.html.twig', [
             'form'=>$form->createView(),
-            'errors'=>$error,'agentInfo'=>$agentInfo
+            'errors'=>$error,'agentInfo'=>$agentInfo,
+            'specialitys'=>$specialitys
         ]);
 
     }
