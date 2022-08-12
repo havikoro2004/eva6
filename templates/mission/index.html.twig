@@ -21,12 +21,13 @@
              {% if missions is not empty %}
                  <form action="">
                      <div class="form-group mt-4 mx-3">
-                         <select class="form-control" id="exampleFormControlSelect1">
-                             <option selected disabled>Afficher les mission par :</option>
-                             <option>2</option>
-                             <option>3</option>
-                             <option>4</option>
-                             <option>5</option>
+                         <label class="float-left" for="">Afficher mission par :</label>
+                         <select class="form-control" id="selectBtn">
+                             <option>Toutes les missions</option>
+                             <option>En préparation</option>
+                             <option>En cours</option>
+                             <option>Terminée</option>
+                             <option>Echec</option>
                          </select>
                      </div>
                  </form>
@@ -54,7 +55,7 @@
                              <td>{{ mission.title }}</td>
                              <td>{{ mission.dateDebut.format('d-m-Y') }}</td>
                              <td>{{ mission.dateFin.format('d-m-Y') }}</td>
-                             <td><a href="mission/{{ mission.id }}" class="btn btn-success">Voir plus</a></td>
+                             <td><a href="mission/{{ mission.id }}" class="btn btn-success">Plus</a></td>
                              {% if app.user %}
                                  <td>
                                      <a class="btn btn-primary" href="/mission/{{ mission.id }}/edit">Modifier</a>
@@ -81,5 +82,13 @@
          </div>
 
      </div>
-
+     {% block javascripts %}
+         <script>
+            selectBtn = document.getElementById('selectBtn')
+            selectBtn.addEventListener('change',showPage)
+            function showPage(){
+                alert('cc')
+            }
+         </script>
+     {% endblock %}
  {% endblock %}
