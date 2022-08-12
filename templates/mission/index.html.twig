@@ -18,6 +18,19 @@
                  </div>
              {% endif %}
              <a href="/mission/add" class="btn btn-success">Ajouter une nouvelle mission</a>
+             {% if missions is not empty %}
+                 <form action="">
+                     <div class="form-group mt-4">
+                         <select class="form-control" id="exampleFormControlSelect1">
+                             <option selected disabled>Afficher les mission par :</option>
+                             <option>2</option>
+                             <option>3</option>
+                             <option>4</option>
+                             <option>5</option>
+                         </select>
+                     </div>
+                 </form>
+             {% endif %}
          </div>
      </div>
      <div class="container">
