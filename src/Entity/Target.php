@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TargetRepository::class)]
 class Target
@@ -17,18 +18,33 @@ class Target
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $firstName = null;
 
+
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birthDay = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $code = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
+    private ?string $code = null;
+
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $nationality = null;
 
     #[ORM\ManyToMany(targetEntity: Mission::class, mappedBy: 'targetMission')]

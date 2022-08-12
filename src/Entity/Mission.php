@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionRepository::class)]
 class Mission
@@ -17,15 +18,25 @@ class Mission
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $code = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex('/^\w+/')]
+    #[Assert\NotBlank]
     private ?string $country = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
