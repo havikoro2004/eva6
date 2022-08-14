@@ -10,6 +10,7 @@ use App\Repository\ContactRepository;
 use App\Repository\MissionRepository;
 use App\Repository\PlanqueRepository;
 use App\Repository\TargetRepository;
+use App\Services\SearchFilter;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;;
 
@@ -26,12 +27,19 @@ class MissionController extends AbstractController
     #[Route('/mission', name: 'app_mission')]
     public function index(MissionRepository $missionRepository ,PaginatorInterface $paginator,Request $request): Response
     {
-        $form = $this->createForm(SearchType::class);
+        $data = new SearchFilter();
+        $form = $this->createForm(SearchType::class,$data);
         $form->handleRequest($request);
-        $data = $form->getData();
+
+        if ($form->isSubmitted()){
+            $resulta = $missionRepository->findByFilter($data);
+        } else {
+            $resulta = $missionRepository->findAll();
+        }
+
         $error =null;
-        $missions = $missionRepository->findAll();
-        $resulta = $paginator->paginate($missions,$request->query->getInt('page',1,),10);
+
+
         return $this->render('mission/index.html.twig', [
             'controller_name' => 'missionController','missions'=>$resulta,
             'errors'=>$error,'form'=>$form->createView()

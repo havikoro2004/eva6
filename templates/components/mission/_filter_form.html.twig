@@ -1,9 +1,7 @@
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
 {{ form_start(form) }}
-        <h5>{{ form_label(form, 'recherche')}}</h5>
-        {{ form_widget(form.recherche)}}
-        <h5>{{ form_label(form, 'country')}}</h5>
-        {{ form_widget(form.country , {'attr': {'class':'form-control mb-2'}}) }}
+        <h5>{{ form_label(form, 'Recherche')}}</h5>
+        {{ form_widget(form.cherche , {'attr': {'placeholder': 'Chercher par le code'}}) }}
         <h5>{{ form_label(form, 'status')}}</h5>
         {{ form_widget(form.status)}}
         <hr class="my-2">

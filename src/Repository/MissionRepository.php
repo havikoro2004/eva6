@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Mission;
+use App\Services\SearchFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,20 +40,31 @@ class MissionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Mission[] Returns an array of Mission objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Mission[] Returns an array of Mission objects
+     */
+    public function findByFilter(SearchFilter $searchFilter)
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select('m,s')
+            ->join('m.status','s');
+
+            if (!empty($searchFilter->cherche)){
+                $query = $query
+                    ->Where('m.code= :cherche')
+                    ->setParameter('cherche', $searchFilter->cherche);
+            }
+            if (!empty($searchFilter->status)){
+                $query = $query
+                    ->andWhere('m.status IN (:status)')
+                    ->setParameter('status', $searchFilter->status);
+            }
+
+
+           return $query->getQuery()->getResult()
+
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Mission
 //    {

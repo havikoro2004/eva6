@@ -9,16 +9,17 @@
      </div>
              {% if missions is not empty %}
                 <div class="gridMission mt-5">
-                    <div class="container side">
+                    <div class="container side mb-5">
                         {% include'components/mission/_filter_form.html.twig' %}
                     </div>
                     <div class="container">
-                        <table class="table col text-left">
+                        <table class="table col text-left mb-5">
                             <tr>
                                 <th scope="col">Code</th>
                                 <th scope="col">Titre</th>
                                 <th scope="col">Date de début</th>
                                 <th scope="col">Date de fin</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Voir détails</th>
                                 {% if app.user %}
                                     <th scope="col">Modifier</th>
@@ -31,6 +32,7 @@
                                     <td>{{ mission.title }}</td>
                                     <td>{{ mission.dateDebut.format('d-m-Y') }}</td>
                                     <td>{{ mission.dateFin.format('d-m-Y') }}</td>
+                                    <td>{{ mission.status }}</td>
                                     <td><a href="mission/{{ mission.id }}" class="btn btn-success">Plus</a></td>
                                     {% if app.user %}
                                         <td>
@@ -54,9 +56,9 @@
              {% endif %}
          </div>
          <div class="Page navigation example d-flex justify-content-center">
-             <div>
-                 {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
-             </div>
+{#             <div>#}
+{#                 {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}#}
+{#             </div>#}
              <div class="mt-5" style="width:100% ">
                  {% include'components/_footer.html.twig' %}
              </div>

@@ -351,16 +351,10 @@ class Mission
         return $this;
     }
 
-    public function getAllArray():Array
+
+    public function __toString(): string
     {
-        return [
-            'id'=>$this->getId(),
-            'code'=>$this->getCode(),
-            'title'=>$this->getTitle(),
-            'dateDebut'=>$this->getDateDebut(),
-            'dateFin'=>$this->getDateFin(),
-
-        ];
-
+        return $this->getStatus()->getName();
     }
+
 }

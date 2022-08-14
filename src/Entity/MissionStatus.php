@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MissionStatusRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,6 +21,25 @@ class MissionStatus
     #[Assert\NotBlank]
     private ?string $name = null;
 
+    #[ORM\OneToMany(mappedBy: 'status', targetEntity: Mission::class)]
+    private Collection $mission;
+
+    /**
+     * @return Collection
+     */
+    public function getMission(): Collection
+    {
+        return $this->mission;
+    }
+
+    /**
+     * @param Collection $mission
+     */
+    public function setMission(Collection $mission): void
+    {
+        $this->mission = $mission;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +55,11 @@ class MissionStatus
         $this->name = $name;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
 }
