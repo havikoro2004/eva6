@@ -26,11 +26,15 @@ class MissionController extends AbstractController
     #[Route('/mission', name: 'app_mission')]
     public function index(MissionRepository $missionRepository ,PaginatorInterface $paginator,Request $request): Response
     {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+        $data = $form->getData();
         $error =null;
         $missions = $missionRepository->findAll();
         $resulta = $paginator->paginate($missions,$request->query->getInt('page',1,),10);
         return $this->render('mission/index.html.twig', [
-            'controller_name' => 'missionController','missions'=>$resulta,'errors'=>$error
+            'controller_name' => 'missionController','missions'=>$resulta,
+            'errors'=>$error,'form'=>$form->createView()
         ]);
     }
 

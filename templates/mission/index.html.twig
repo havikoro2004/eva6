@@ -2,47 +2,53 @@
  {% block body %}
      {% include 'components/_header.html.twig' %}
      {% include 'components/_navbar.html.twig' %}
-     <div class="container mt-4">
+     <div class="container mt-4 text-center">
          {% include 'components/mission/_messages_flash.html.twig' %}
          <h1 class="my-5 text-dark text-center">Missions</h1>
              <a href="/mission/add" class="btn btn-success">Ajouter une nouvelle mission</a>
      </div>
-
              {% if missions is not empty %}
-                 <table class="table m-5 col text-center">
-                     <tr>
-                         <th scope="col">Code</th>
-                         <th scope="col">Titre</th>
-                         <th scope="col">Date de début</th>
-                         <th scope="col">Date de fin</th>
-                         <th scope="col">Voir détails</th>
-                        {% if app.user %}
-                         <th scope="col">Modifier</th>
-                         <th scope="col">Supprimer</th>
-                         {% endif %}
-                     </tr>
-                     {% for mission in missions %}
-                         <tr>
-                             <td>{{ mission.code }}</td>
-                             <td>{{ mission.title }}</td>
-                             <td>{{ mission.dateDebut.format('d-m-Y') }}</td>
-                             <td>{{ mission.dateFin.format('d-m-Y') }}</td>
-                             <td><a href="mission/{{ mission.id }}" class="btn btn-success">Plus</a></td>
-                             {% if app.user %}
-                                 <td>
-                                     <a class="btn btn-primary" href="/mission/{{ mission.id }}/edit">Modifier</a>
-                                 </td>
-                                 <td>{% include 'components/mission/_modal.html.twig' %}
-                                     {% block button %}
-                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ mission.id }}">
-                                             Suprimer
-                                         </button>
-                                     {% endblock %}
-                                 </td>
-                             {% endif %}
-                         </tr>
-                     {% endfor %}
-                 </table>
+                <div class="gridMission mt-5">
+                    <div class="container side">
+                        {% include'components/mission/_filter_form.html.twig' %}
+                    </div>
+                    <div class="container">
+                        <table class="table col text-left">
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Titre</th>
+                                <th scope="col">Date de début</th>
+                                <th scope="col">Date de fin</th>
+                                <th scope="col">Voir détails</th>
+                                {% if app.user %}
+                                    <th scope="col">Modifier</th>
+                                    <th scope="col">Supprimer</th>
+                                {% endif %}
+                            </tr>
+                            {% for mission in missions %}
+                                <tr>
+                                    <td>{{ mission.code }}</td>
+                                    <td>{{ mission.title }}</td>
+                                    <td>{{ mission.dateDebut.format('d-m-Y') }}</td>
+                                    <td>{{ mission.dateFin.format('d-m-Y') }}</td>
+                                    <td><a href="mission/{{ mission.id }}" class="btn btn-success">Plus</a></td>
+                                    {% if app.user %}
+                                        <td>
+                                            <a class="btn btn-primary" href="/mission/{{ mission.id }}/edit">Modifier</a>
+                                        </td>
+                                        <td>{% include 'components/mission/_modal.html.twig' %}
+                                            {% block button %}
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ mission.id }}">
+                                                    Suprimer
+                                                </button>
+                                            {% endblock %}
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
              {% else %}
                  <div class="alert alert-dark mt-4 container text-center" style="width: 92%">Il n'y a pas encore de mission ajoutée</div>
              {% endif %}
@@ -51,7 +57,9 @@
              <div>
                  {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
              </div>
-
+             <div class="mt-5" style="width:100% ">
+                 {% include'components/_footer.html.twig' %}
+             </div>
      {% block javascripts %}
          <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
          <script>

@@ -8,6 +8,13 @@
     justify-content: center;
 
 }
+.gridMission{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+.side{
+    background-color: darkgray;
+}
 .logo{
     width: 100%;
     height: 70%;
@@ -40,6 +47,10 @@
 }
 
 @media (min-width: 720px) {
+    .gridMission{
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+    }
     .brand {
         grid-template-columns: 1fr 1fr;
     }
