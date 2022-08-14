@@ -51,14 +51,15 @@ class MissionRepository extends ServiceEntityRepository
 
             if (!empty($searchFilter->cherche)){
                 $query = $query
-                    ->Where('m.code= :cherche')
+                    ->andWhere('m.code= :cherche')
                     ->setParameter('cherche', $searchFilter->cherche);
             }
             if (!empty($searchFilter->status)){
                 $query = $query
-                    ->andWhere('m.status IN (:status)')
+                    ->andWhere('s.id IN (:status)')
                     ->setParameter('status', $searchFilter->status);
             }
+
 
 
            return $query->getQuery()->getResult()

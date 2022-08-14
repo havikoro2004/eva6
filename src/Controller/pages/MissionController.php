@@ -30,16 +30,9 @@ class MissionController extends AbstractController
         $data = new SearchFilter();
         $form = $this->createForm(SearchType::class,$data);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted()){
-            $resulta = $missionRepository->findByFilter($data);
-        } else {
-            $resulta = $missionRepository->findAll();
-        }
-
         $error =null;
 
-
+        $resulta = $missionRepository->findByFilter($data);
         return $this->render('mission/index.html.twig', [
             'controller_name' => 'missionController','missions'=>$resulta,
             'errors'=>$error,'form'=>$form->createView()

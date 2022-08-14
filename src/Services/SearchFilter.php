@@ -3,11 +3,12 @@
 
 namespace App\Services;
 
-use Doctrine\Common\Collections\Collection;
-
 class SearchFilter
 {
+    /**
+     * @var string
+     */
     public string $cherche;
-    public Collection $status;
+    public array $status =[];
 
 }

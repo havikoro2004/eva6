@@ -5,7 +5,9 @@
      <div class="container mt-4 text-center">
          {% include 'components/mission/_messages_flash.html.twig' %}
          <h1 class="my-5 text-dark text-center">Missions</h1>
+         {% if missions is not empty %}
              <a href="/mission/add" class="btn btn-success">Ajouter une nouvelle mission</a>
+         {% endif %}
      </div>
              {% if missions is not empty %}
                 <div class="gridMission mt-5">
