@@ -5,37 +5,9 @@
      <div class="container mt-4">
          {% include 'components/mission/_messages_flash.html.twig' %}
          <h1 class="my-5 text-dark text-center">Missions</h1>
-         <div class="container text-center">
-             {{ form_start(form) }}
-             <div class="d-flex mx-3">
-                 {{ form_widget(form.code , {'attr': {'placeholder': 'Chercher une mission par son code','class':'form-control mb-2 mr-2'}}) }}
-                 <button class="btn btn-success mb-4" style="min-width: 12rem">Chercher</button>
-             </div>
-             {{ form_end(form) }}
-             {% if result is not empty %}
-                 <div class="alert alert-success mx-3 mb-4">
-                     Résultat trouvé =>   <a href="/mission/{{ result.id }}">Mission : {{ result.code }}</a>
-                 </div>
-             {% endif %}
              <a href="/mission/add" class="btn btn-success">Ajouter une nouvelle mission</a>
-             {% if missions is not empty %}
-                 <form action="">
-                     <div class="form-group mt-4 mx-3">
-                         <label class="float-left" for="">Afficher mission par :</label>
-                         <select class="form-control" id="selectBtn">
-                             <option>Toutes les missions</option>
-                             <option>En préparation</option>
-                             <option>En cours</option>
-                             <option>Terminée</option>
-                             <option>Echec</option>
-                         </select>
-                     </div>
-                 </form>
-             {% endif %}
-         </div>
      </div>
-     <div class="container">
-         <div class="row">
+
              {% if missions is not empty %}
                  <table class="table m-5 col text-center">
                      <tr>
@@ -79,45 +51,11 @@
              <div>
                  {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
              </div>
-         </div>
 
-     </div>
      {% block javascripts %}
          <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
          <script>
-            window.addEventListener('load',event=>{
-                axios.get('/mission/all').then((response) => {
-                        console.log(response.data)
-                });
-                selectBtn = document.getElementById('selectBtn')
-                selectBtn.addEventListener('change',showPage)
-                var url = null
 
-                function showPage(){
-                    switch (selectBtn.value) {
-                        case "En préparation":
-                            url='prepare'
-                            break;
-                        case "En cours":
-                            url='encours'
-                            break;
-                        case "Terminée":
-                            url='termineted'
-                            break;
-                        case "Echec":
-                            url='echec'
-                            break;
-                        case "Toutes les missions":
-                            url='all'
-                            break;
-                        default:
-                            url='all'
-                    }
-                    axios.get('/mission/'+url).then((response) => {
-                        console.log(response.data)
-                    });
-                }
-            })
          </script>
      {% endblock %}
  {% endblock %}

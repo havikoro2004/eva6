@@ -26,98 +26,13 @@ class MissionController extends AbstractController
     #[Route('/mission', name: 'app_mission')]
     public function index(MissionRepository $missionRepository ,PaginatorInterface $paginator,Request $request): Response
     {
-        $form = $this->createForm(SearchType::class);
-        $form->handleRequest($request);
-        $data = $form->getData();
-        $result=null;
-        $error=null;
-        if ($form->isSubmitted() && $form->isValid()){
-            $result = $missionRepository->findOneBy([
-                'code'=>$form->get('code')->getViewData()
-            ]);
-            if (!$result){
-                $this->addFlash('alert','Aucune mission n\'est trouvée avec ce code');
-            }
-        }
         $missions = $missionRepository->findAll();
         $resulta = $paginator->paginate($missions,$request->query->getInt('page',1,),10);
         return $this->render('mission/index.html.twig', [
             'controller_name' => 'missionController','missions'=>$resulta,'errors'=>$error,'form'=>$form->createView(),
-            'result'=>$result
         ]);
     }
-
-    /*-----------------------------------   Les requettes AJAX AXIOS ----------------------------*/
-
-
-    #[Route('/mission/all', name: 'app_mission_all')]
-    public function all(MissionRepository $missionRepository):Response{
-        $arrayOfUsers = [];
-        $missions = $missionRepository->findAll();
-
-        foreach ($missions as $user) {
-            $arrayOfUsers[] = $user->getAllArray();
-        }
-        return $this->json($arrayOfUsers);
-
-    }
-    #[Route('/mission/termineted', name: 'app_mission_termineted')]
-    public function termineted(MissionRepository $missionRepository):Response{
-        $arrayOfUsers = [];
-        $missions = $missionRepository->findBy([
-            'status'=>9
-        ]);
-
-        foreach ($missions as $user) {
-            $arrayOfUsers[] = $user->getAllArray();
-        }
-        return $this->json($arrayOfUsers);
-
-    }
-
-    #[Route('/mission/encours', name: 'app_mission_encours')]
-    public function encours(MissionRepository $missionRepository):Response{
-        $arrayOfUsers = [];
-        $missions = $missionRepository->findBy([
-            'status'=>6
-        ]);
-        foreach ($missions as $user) {
-            $arrayOfUsers[] = $user->getAllArray();
-        }
-        return $this->json($arrayOfUsers);
-
-    }
-
-    #[Route('/mission/echec', name: 'app_mission_echec')]
-    public function echec(MissionRepository $missionRepository):Response{
-        $arrayOfUsers = [];
-        $missions = $missionRepository->findBy([
-            'status'=>8
-        ]);
-
-        foreach ($missions as $user) {
-            $arrayOfUsers[] = $user->getAllArray();
-        }
-        return $this->json($arrayOfUsers);
-
-    }
-
-    #[Route('/mission/prepare', name: 'app_mission_prepare')]
-    public function prepare(MissionRepository $missionRepository):Response{
-        $arrayOfUsers = [];
-        $missions = $missionRepository->findBy([
-            'status'=>7
-        ]);
-
-        foreach ($missions as $user) {
-            $arrayOfUsers[] = $user->getAllArray();
-        }
-        return $this->json($arrayOfUsers);
-
-    }
-
-    /*-----------------------------------   Les requettes AJAX AXIOS FIN ------------------------------------*/
-
+    
     #[Route('/mission/add', name: 'app_mission_add')]
     #[IsGranted('ROLE_ADMIN')]
     public function add(PlanqueRepository $planqueRepository ,TargetRepository $targets,AgentRepository $agentRepository ,ContactRepository $contactRepository ,MissionRepository $missionRepository ,ManagerRegistry $manager,Request $request,ValidatorInterface $validator): Response
