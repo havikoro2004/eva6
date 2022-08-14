@@ -28,6 +28,7 @@ class MissionController extends AbstractController
     public function index(MissionRepository $missionRepository ,PaginatorInterface $paginator,Request $request): Response
     {
         $data = new SearchFilter();
+        $data->page=$request->get('page',1);
         $form = $this->createForm(SearchType::class,$data);
         $form->handleRequest($request);
         $error =null;

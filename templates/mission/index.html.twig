@@ -51,16 +51,15 @@
                                 </tr>
                             {% endfor %}
                         </table>
+                        <div class="container text-center">
+                            {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+                        </div>
                     </div>
                 </div>
              {% else %}
                  <div class="alert alert-dark mt-4 container text-center" style="width: 92%">Il n'y a pas encore de mission ajoutée</div>
              {% endif %}
          </div>
-         <div class="Page navigation example d-flex justify-content-center">
-{#             <div>#}
-{#                 {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}#}
-{#             </div>#}
              <div class="mt-5" style="width:100% ">
                  {% include'components/_footer.html.twig' %}
              </div>

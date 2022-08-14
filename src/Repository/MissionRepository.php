@@ -6,6 +6,7 @@ use App\Entity\Mission;
 use App\Services\SearchFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Mission>
@@ -17,8 +18,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MissionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $paginator;
+    public function __construct(ManagerRegistry $registry ,PaginatorInterface $paginator)
     {
+        $this->paginator=$paginator;
         parent::__construct($registry, Mission::class);
     }
 
@@ -40,9 +43,7 @@ class MissionRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return Mission[] Returns an array of Mission objects
-     */
+
     public function findByFilter(SearchFilter $searchFilter)
     {
         $query = $this->createQueryBuilder('m')
@@ -61,8 +62,11 @@ class MissionRepository extends ServiceEntityRepository
             }
 
 
-
-           return $query->getQuery()->getResult()
+            $query = $query->getQuery()->getResult();
+           return $this->paginator->paginate(
+               $query,
+               $searchFilter->page,2
+           )
 
         ;
     }
