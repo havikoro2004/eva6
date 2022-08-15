@@ -17,6 +17,7 @@ use Knp\Component\Pager\PaginatorInterface;;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,8 +33,16 @@ class MissionController extends AbstractController
         $form = $this->createForm(SearchType::class,$data);
         $form->handleRequest($request);
         $error =null;
-
         $resulta = $missionRepository->findByFilter($data);
+
+       if ($request->isXmlHttpRequest()){
+           return new JsonResponse([
+               'content' => $this->renderView('components/mission/_missions.html.twig',[
+                   'missions'=>$resulta
+               ])
+           ]);
+       }
+
         return $this->render('mission/index.html.twig', [
             'controller_name' => 'missionController','missions'=>$resulta,
             'errors'=>$error,'form'=>$form->createView()

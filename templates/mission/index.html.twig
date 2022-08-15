@@ -5,7 +5,7 @@
      <div class="container mt-4 text-center">
          {% include 'components/mission/_messages_flash.html.twig' %}
          <h1 class="my-5 text-dark text-center">Missions</h1>
-         {% if missions is not empty %}
+         {% if app.user %}
              <a href="/mission/add" class="btn btn-success">Ajouter une nouvelle mission</a>
          {% endif %}
      </div>
@@ -62,11 +62,5 @@
          </div>
              <div class="mt-5" style="width:100% ">
                  {% include'components/_footer.html.twig' %}
-             </div>
-     {% block javascripts %}
-         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-         <script>
-
-         </script>
-     {% endblock %}
+             </div>=
  {% endblock %}

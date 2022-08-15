@@ -65,7 +65,7 @@ class MissionRepository extends ServiceEntityRepository
             $query = $query->getQuery()->getResult();
            return $this->paginator->paginate(
                $query,
-               $searchFilter->page,2
+               $searchFilter->page,5
            )
 
         ;
