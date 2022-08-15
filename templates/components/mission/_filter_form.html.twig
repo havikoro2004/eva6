@@ -1,10 +1,10 @@
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
-{{ form_start(form) }}
+ {{ form_start(form , {'attr': {'id': 'form'}}  ) }}
         <h5>{{ form_label(form, 'Recherche')}}</h5>
         {{ form_widget(form.cherche , {'attr': {'placeholder': 'Chercher par le code'}}) }}
         <h5>{{ form_label(form, 'status')}}</h5>
         {{ form_widget(form.status)}}
         <hr class="my-2">
-        <div class="container text-center"><button class="btn btn-primary">Chercher</button></div>
+        <div class="container text-center" id="chercheBtn"><button class="btn btn-primary">Chercher</button></div>
         <hr class="my-2">
 {{ form_end(form) }}

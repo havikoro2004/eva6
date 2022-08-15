@@ -14,43 +14,8 @@
                     <div class="container side mb-5">
                         {% include'components/mission/_filter_form.html.twig' %}
                     </div>
-                    <div class="container">
-                        <table class="table col text-left mb-5">
-                            <tr>
-                                <th scope="col">Code</th>
-                                <th scope="col">Titre</th>
-                                <th scope="col">Date de début</th>
-                                <th scope="col">Date de fin</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Voir détails</th>
-                                {% if app.user %}
-                                    <th scope="col">Modifier</th>
-                                    <th scope="col">Supprimer</th>
-                                {% endif %}
-                            </tr>
-                            {% for mission in missions %}
-                                <tr>
-                                    <td>{{ mission.code }}</td>
-                                    <td>{{ mission.title }}</td>
-                                    <td>{{ mission.dateDebut.format('d-m-Y') }}</td>
-                                    <td>{{ mission.dateFin.format('d-m-Y') }}</td>
-                                    <td>{{ mission.status }}</td>
-                                    <td><a href="mission/{{ mission.id }}" class="btn btn-success">Plus</a></td>
-                                    {% if app.user %}
-                                        <td>
-                                            <a class="btn btn-primary" href="/mission/{{ mission.id }}/edit">Modifier</a>
-                                        </td>
-                                        <td>{% include 'components/mission/_modal.html.twig' %}
-                                            {% block button %}
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ mission.id }}">
-                                                    Suprimer
-                                                </button>
-                                            {% endblock %}
-                                        </td>
-                                    {% endif %}
-                                </tr>
-                            {% endfor %}
-                        </table>
+                    <div class="container" id="table">
+                        {% include'components/mission/_mission.html.twig' %}
                         <div class="container text-center">
                             {{ knp_pagination_render(missions,'@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
                         </div>
@@ -62,5 +27,36 @@
          </div>
              <div class="mt-5" style="width:100% ">
                  {% include'components/_footer.html.twig' %}
-             </div>=
+             </div>
+     {% block javascripts %}
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+         <script>
+             const table = document.getElementById('table')
+            async function loadUrl(url){
+
+             }
+
+             chercheBtn = document.getElementById('chercheBtn')
+             chercheBtn.addEventListener('click',loadForm)
+
+             async function loadForm (event){
+                 var formData = new FormData(document.querySelector('form'))
+                 event.preventDefault()
+                 const url = new URL(form.getAttribute('action') || window.location.href)
+                 const params = new URLSearchParams()
+                 formData.forEach((value,key)=>{
+                     params.append(key,value)
+                 })
+
+                 const ajax = url.pathname + '?' + params.toString()
+                 const response = await fetch(ajax,{
+                     headers : {
+                         'X-Requested-With' : 'XMLHttpRequest'
+                     }
+                 })
+                     const data = await response.json()
+                    table.innerHTML=data.content
+             }
+         </script>
+     {% endblock %}
  {% endblock %}
