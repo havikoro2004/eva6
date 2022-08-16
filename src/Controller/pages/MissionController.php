@@ -37,7 +37,8 @@ class MissionController extends AbstractController
 
        if ($request->isXmlHttpRequest()){
            return new JsonResponse([
-                'content'=>$this->renderView('components/mission/_mission.html.twig',['missions'=>$resulta])
+                'content'=>$this->renderView('components/mission/_mission.html.twig',['missions'=>$resulta]),
+               'pagination'=>$this->renderView('components/mission/_pagination.html.twig',['missions'=>$resulta])
            ]);
        }
 
