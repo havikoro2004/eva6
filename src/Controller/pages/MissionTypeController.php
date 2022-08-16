@@ -44,7 +44,7 @@ class MissionTypeController extends AbstractController
         }
 
         $missionList = $missionType->findAll();
-        $resulta = $paginator->paginate($missionList,$request->query->getInt('page',1,),10);
+        $resulta = $paginator->paginate($missionList,$request->query->getInt('page',1,),5);
         return $this->render('mission_type/index.html.twig', [
             'controller_name' => 'MissionTypeController','form'=>$form->createView(),
             'errors'=>$error,'allMissionType'=>$resulta

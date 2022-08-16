@@ -45,7 +45,7 @@ class SpecialityController extends AbstractController
         }
 
         $specialitysList = $specialityRepository->findAll();
-        $resulta = $paginator->paginate($specialitysList,$request->query->getInt('page',1,),10);
+        $resulta = $paginator->paginate($specialitysList,$request->query->getInt('page',1,),5);
 
         return $this->render('speciality/index.html.twig', [
             'controller_name' => 'SpecialityController','form'=>$form->createView(),

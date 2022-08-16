@@ -24,7 +24,7 @@ class AgentController extends AbstractController
     {
         $error=null;
         $agents = $agent->findAll();
-        $resulta = $paginator->paginate($agents,$request->query->getInt('page',1,),10);
+        $resulta = $paginator->paginate($agents,$request->query->getInt('page',1,),5);
         return $this->render('agent/index.html.twig', [
             'controller_name' => 'AgentController','agents'=>$resulta,'errors'=>$error
         ]);

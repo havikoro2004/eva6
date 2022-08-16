@@ -26,7 +26,7 @@ class ContactController extends AbstractController
     {
         $error=null;
         $contacts = $contactRepository->findAll();
-        $resulta = $paginator->paginate($contacts,$request->query->getInt('page',1,),10);
+        $resulta = $paginator->paginate($contacts,$request->query->getInt('page',1,),5);
         return $this->render('contact/index.html.twig', [
         'contacts'=>$resulta,'errors'=>$error
         ]);

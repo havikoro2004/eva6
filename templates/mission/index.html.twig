@@ -55,17 +55,6 @@
                     table.innerHTML=data.content
                  paginator.innerHTML=data.pagination
              }
-            paginator.querySelectorAll('a').forEach(a=>{
-                a.addEventListener('click',async (e)=>{
-                    e.preventDefault()
-                    const response = await fetch(a.getAttribute('href'),{
-                        headers : {
-                            'X-Requested-With' : 'XMLHttpRequest'
-                        }
-                    })
-                    paginator.innerHTML=data.pagination
-                })
-            })
 
          </script>
      {% endblock %}

@@ -25,7 +25,7 @@ class TargetController extends AbstractController
     {
         $error=null;
         $result = $targetRepository->findAll();
-        $targets = $paginator->paginate($result,$request->query->getInt('page',1,),10);
+        $targets = $paginator->paginate($result,$request->query->getInt('page',1,),5);
         return $this->render('target/index.html.twig', [
             'controller_name' => 'TargetController','targets'=>$targets,'errors'=>$error
         ]);

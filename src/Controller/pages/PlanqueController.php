@@ -24,7 +24,7 @@ class PlanqueController extends AbstractController
     {
         $error=null;
         $result = $planqueRepository->findAll();
-        $planques = $paginator->paginate($result,$request->query->getInt('page',1,),10);
+        $planques = $paginator->paginate($result,$request->query->getInt('page',1,),5);
         return $this->render('planque/index.html.twig', [
             'planques'=>$planques,'errors'=>$error
         ]);

@@ -44,7 +44,7 @@ class MissionsStatusController extends AbstractController
         }
 
         $missionStatusList = $missionStatusRepository->findAll();
-        $resulta = $paginator->paginate($missionStatusList,$request->query->getInt('page',1,),10);
+        $resulta = $paginator->paginate($missionStatusList,$request->query->getInt('page',1,),5);
 
         return $this->render('mission_status/index.html.twig', [
             'controller_name' => 'MissionsStatusController','form'=>$form->createView(),
