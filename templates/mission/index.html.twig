@@ -40,6 +40,8 @@
              chercheBtn.addEventListener('click',loadForm)
 
              async function loadForm (event){
+                 table.innerHTML='<div class="container text-center mt-5"><div class="spinner-border text-primary" role="status">'+
+                     '<span class="sr-only">Loading...</span></div></div>'
                  var formData = new FormData(document.querySelector('form'))
                  event.preventDefault()
                  const url = new URL(form.getAttribute('action') || window.location.href)
