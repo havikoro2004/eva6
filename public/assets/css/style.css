@@ -30,6 +30,8 @@
     grid-template-rows: 1fr 1fr 1fr;
     row-gap: 8px;
     column-gap: 8px;
+    max-width: 96%;
+    margin: auto;
 }
 .button_menu {
     height: 30vh;
@@ -68,6 +70,8 @@
     .btns_row {
         display: grid;
         margin-top: 2rem;
+        max-width: 99%;
+        margin: auto;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr;
         row-gap: 8px;
