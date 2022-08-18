@@ -28,10 +28,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 8px;
+    column-gap: 8px;
 }
 .button_menu {
     height: 30vh;
-    margin: 0.5rem;
 }
 .login_container{
     display: grid;
@@ -66,12 +67,14 @@
     }
     .btns_row {
         display: grid;
+        margin-top: 2rem;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr;
+        row-gap: 8px;
+        column-gap: 8px;
     }
     .button_menu {
         height: 30vh;
-        margin: 1.5rem;
     }
     .from_login {
         width: 50vw;
