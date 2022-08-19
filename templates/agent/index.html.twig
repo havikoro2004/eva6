@@ -27,10 +27,10 @@
                      </tr>
                      {% for agent in agents %}
                          <tr>
+                             <td>{{ agent.code }}</td>
                              <td>{{ agent.firstName }}</td>
                              <td>{{ agent.lastName }}</td>
                              <td>{{ agent.birthDay.format('d-m-Y') }}</td>
-                             <td>{{ agent.code }}</td>
                              <td>{{ agent.nationality|country_name }}</td>
                              <td>
                                  {% for speciality in agent.agentSpeciality %}
