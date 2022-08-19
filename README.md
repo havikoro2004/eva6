@@ -1,5 +1,12 @@
 # Evaluation d'entrainement 6 (Créer une application web)
 L’objectif est de créer un site internet permettant la gestion des données du KGB.
+* dans ce projet j'ai utilisé :
+ * Symfony 6 avec les bundles dont j'avais besoin.
+ * Bootstrap pour le js css .
+ * Html/CSS.
+ * Javascript.
+ * Mariadb-10.6.5.
+ 
 ## Contexte du projet : la BDD
 * Les agents ont un nom, un prénom, une date de naissance, un code d'identification, une nationalité, 1 ou plusieurs spécialités.
 * Les cibles ont un nom, un prénom, une date de naissance, un nom de code, une nationalité.
