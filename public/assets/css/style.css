@@ -1,4 +1,7 @@
 /** MOBILE FIRST **/
+body,html{
+    display: grid;
+}
 .brand {
     display: grid;
     grid-template-rows: 30vh;
@@ -26,12 +29,11 @@
 }
 .btns_row {
     display: grid;
+    margin-top: 2rem;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    row-gap: 8px;
-    column-gap: 8px;
-    max-width: 96%;
-    margin: auto;
+    row-gap: 10px;
+    column-gap: 10px;
 }
 .button_menu {
     height: 30vh;
@@ -70,12 +72,10 @@
     .btns_row {
         display: grid;
         margin-top: 2rem;
-        max-width: 99%;
-        margin: auto;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr;
-        row-gap: 8px;
-        column-gap: 8px;
+        row-gap: 10px;
+        column-gap: 10px;
     }
     .button_menu {
         height: 30vh;
