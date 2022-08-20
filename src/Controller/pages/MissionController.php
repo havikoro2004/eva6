@@ -146,8 +146,6 @@ class MissionController extends AbstractController
             'cibles'=>$cibles
         ]);
     }
-
-
     #[Route('/mission/{id}/edit')]
     #[Entity('mission', options: ['id' => 'id'])]
     #[IsGranted('ROLE_ADMIN')]
